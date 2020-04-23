@@ -1,0 +1,395 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema project67
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema project67
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `project67` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `project67` ;
+
+-- -----------------------------------------------------
+-- Table `project67`.`employee`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`employee` (
+  `Employee_ID` INT(11) NOT NULL,
+  `Name` VARCHAR(45) NOT NULL,
+  `Mobile_No` INT(11) NOT NULL,
+  `Email` VARCHAR(45) NOT NULL,
+  `Salary` FLOAT NOT NULL,
+  `Address` VARCHAR(45) NOT NULL,
+  `Hire_Date` DATE NOT NULL,
+  PRIMARY KEY (`Employee_ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`attendance`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`attendance` (
+  `Employee_ID` INT(12) NOT NULL,
+  `Date` DATE NOT NULL,
+  `Attendance` TINYINT(1) NULL DEFAULT NULL,
+  `Entry_Time` TIME NULL DEFAULT NULL,
+  `Exit_Time` TIME NULL DEFAULT NULL,
+  PRIMARY KEY (`Employee_ID`, `Date`),
+  CONSTRAINT `attendance_ibfk_1`
+    FOREIGN KEY (`Employee_ID`)
+    REFERENCES `project67`.`employee` (`Employee_ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`bill`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`bill` (
+  `Bill_ID` INT(11) NOT NULL,
+  `Total` FLOAT NOT NULL,
+  `Discount` FLOAT NOT NULL,
+  `Effective Price` FLOAT NOT NULL,
+  `Created_Date` DATE NOT NULL,
+  `Created_Time` TIME NOT NULL,
+  PRIMARY KEY (`Bill_ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`card_details`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`card_details` (
+  `Card_ID` INT(11) NOT NULL,
+  `Cardholder_name` VARCHAR(45) NOT NULL,
+  `Bank` VARCHAR(45) NOT NULL,
+  `Type` VARCHAR(45) NOT NULL,
+  `Expiry_date` DATE NOT NULL,
+  `CVV` INT(11) NOT NULL,
+  PRIMARY KEY (`Card_ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`customer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`customer` (
+  `Customer_ID` INT(11) NOT NULL,
+  `Name` VARCHAR(45) NOT NULL,
+  `Mobile_No` INT(11) NOT NULL,
+  `Address` VARCHAR(45) NOT NULL,
+  `Email` VARCHAR(45) NULL DEFAULT NULL,
+  `Credit` INT(11) NOT NULL,
+  `Cart_ID` INT(11) NOT NULL,
+  PRIMARY KEY (`Customer_ID`),
+  UNIQUE INDEX `Cart_ID` (`Cart_ID` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`item`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`item` (
+  `Item_ID` INT(11) NOT NULL,
+  `Name` VARCHAR(45) NOT NULL,
+  `Company_name` VARCHAR(45) NOT NULL,
+  `Price` FLOAT NOT NULL,
+  `Available_Quantity` INT(11) NOT NULL,
+  `Manufacture_Date` DATE NOT NULL,
+  `Expiry_Date` DATE NOT NULL,
+  PRIMARY KEY (`Item_ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`orders`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`orders` (
+  `Order_ID` INT(11) NOT NULL,
+  `Item_ID` INT(11) NOT NULL,
+  `Quantity` INT(11) NOT NULL,
+  `Price` FLOAT NOT NULL,
+  PRIMARY KEY (`Order_ID`),
+  INDEX `Item_ID` (`Item_ID` ASC) VISIBLE,
+  CONSTRAINT `orders_ibfk_1`
+    FOREIGN KEY (`Item_ID`)
+    REFERENCES `project67`.`item` (`Item_ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`cart_order`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`cart_order` (
+  `Cart_ID` INT(11) NOT NULL,
+  `Order_ID` INT(11) NOT NULL,
+  PRIMARY KEY (`Cart_ID`, `Order_ID`),
+  INDEX `Order_ID` (`Order_ID` ASC) VISIBLE,
+  CONSTRAINT `cart_order_ibfk_1`
+    FOREIGN KEY (`Cart_ID`)
+    REFERENCES `project67`.`customer` (`Cart_ID`),
+  CONSTRAINT `cart_order_ibfk_2`
+    FOREIGN KEY (`Order_ID`)
+    REFERENCES `project67`.`orders` (`Order_ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`manager`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`manager` (
+  `Manager_ID` INT(11) NOT NULL,
+  `Name` VARCHAR(45) NOT NULL,
+  `Salary` FLOAT NOT NULL,
+  `Department` VARCHAR(45) NOT NULL,
+  `Email` VARCHAR(45) NOT NULL,
+  `Address` VARCHAR(45) NOT NULL,
+  `Hire_Date` DATE NOT NULL,
+  `Mobile_No` INT(11) NOT NULL,
+  PRIMARY KEY (`Manager_ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`employee_manager`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`employee_manager` (
+  `Employee_ID` INT(11) NOT NULL,
+  `Manager_ID` INT(11) NOT NULL,
+  PRIMARY KEY (`Employee_ID`, `Manager_ID`),
+  INDEX `Manager_ID` (`Manager_ID` ASC) VISIBLE,
+  CONSTRAINT `employee_manager_ibfk_1`
+    FOREIGN KEY (`Employee_ID`)
+    REFERENCES `project67`.`employee` (`Employee_ID`),
+  CONSTRAINT `employee_manager_ibfk_2`
+    FOREIGN KEY (`Manager_ID`)
+    REFERENCES `project67`.`manager` (`Manager_ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`help_feedback`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`help_feedback` (
+  `Compaint_ID` INT(11) NOT NULL,
+  `Customer_ID` INT(11) NOT NULL,
+  `Mobile_No` INT(11) NOT NULL,
+  `Email` VARCHAR(45) NULL DEFAULT NULL,
+  `Description` VARCHAR(500) NOT NULL,
+  PRIMARY KEY (`Compaint_ID`),
+  INDEX `Customer_ID` (`Customer_ID` ASC) VISIBLE,
+  CONSTRAINT `help_feedback_ibfk_1`
+    FOREIGN KEY (`Customer_ID`)
+    REFERENCES `project67`.`customer` (`Customer_ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`offer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`offer` (
+  `Offer_ID` INT(11) NOT NULL,
+  `Name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`Offer_ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`offer_item`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`offer_item` (
+  `Offer_ID` INT(11) NOT NULL,
+  `Item_ID` INT(11) NOT NULL,
+  PRIMARY KEY (`Offer_ID`, `Item_ID`),
+  INDEX `Item_ID` (`Item_ID` ASC) VISIBLE,
+  CONSTRAINT `offer_item_ibfk_1`
+    FOREIGN KEY (`Offer_ID`)
+    REFERENCES `project67`.`offer` (`Offer_ID`),
+  CONSTRAINT `offer_item_ibfk_2`
+    FOREIGN KEY (`Item_ID`)
+    REFERENCES `project67`.`item` (`Item_ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`bill_payment`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`bill_payment` (
+  `Bill_ID` INT(11) NOT NULL,
+  `Payment_Method` VARCHAR(100) NOT NULL,
+  `Paid_Through` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`Bill_ID`),
+  CONSTRAINT `Bill_ID`
+    FOREIGN KEY (`Bill_ID`)
+    REFERENCES `project67`.`bill` (`Bill_ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`prediction`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`prediction` (
+  `Date` DATE NOT NULL,
+  `Item_ID` INT(11) NOT NULL,
+  `Actual_Sales` INT(11) NOT NULL DEFAULT '0',
+  `Predicted_Sales` INT(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Date`, `Item_ID`),
+  INDEX `Item_ID` (`Item_ID` ASC) VISIBLE,
+  CONSTRAINT `prediction_ibfk_1`
+    FOREIGN KEY (`Item_ID`)
+    REFERENCES `project67`.`item` (`Item_ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`sales`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`sales` (
+  `Date` DATE NOT NULL,
+  `Total_Sales` FLOAT NOT NULL,
+  `Total_Investment` FLOAT NOT NULL,
+  `Tax_Paid` FLOAT NOT NULL,
+  `Accruals_Paid` FLOAT NOT NULL,
+  `Net_Profit` FLOAT NOT NULL,
+  PRIMARY KEY (`Date`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`supplier`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`supplier` (
+  `Supplier_ID` INT(11) NOT NULL,
+  `Name` VARCHAR(45) NOT NULL,
+  `Mobile_No` INT(11) NOT NULL,
+  `Email` VARCHAR(45) NOT NULL,
+  `Address` VARCHAR(45) NOT NULL,
+  `GST_No` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`Supplier_ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`supplier_item`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`supplier_item` (
+  `Supplier_ID` INT(11) NOT NULL,
+  `Item_ID` INT(11) NOT NULL,
+  PRIMARY KEY (`Supplier_ID`, `Item_ID`),
+  INDEX `Item_ID` (`Item_ID` ASC) VISIBLE,
+  CONSTRAINT `supplier_item_ibfk_1`
+    FOREIGN KEY (`Supplier_ID`)
+    REFERENCES `project67`.`supplier` (`Supplier_ID`),
+  CONSTRAINT `supplier_item_ibfk_2`
+    FOREIGN KEY (`Item_ID`)
+    REFERENCES `project67`.`item` (`Item_ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`customer_card`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`customer_card` (
+  `Customer_ID` INT(11) NOT NULL,
+  `Card_ID` INT(11) NOT NULL,
+  PRIMARY KEY (`Customer_ID`, `Card_ID`),
+  INDEX `Card_ID_idx` (`Card_ID` ASC) VISIBLE,
+  CONSTRAINT `Customer_ID`
+    FOREIGN KEY (`Customer_ID`)
+    REFERENCES `project67`.`customer` (`Customer_ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Card_ID`
+    FOREIGN KEY (`Card_ID`)
+    REFERENCES `project67`.`card_details` (`Card_ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`bill_orders`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`bill_orders` (
+  `Bill_ID` INT(11) NOT NULL,
+  `Order_ID` INT(11) NOT NULL,
+  PRIMARY KEY (`Bill_ID`, `Order_ID`),
+  INDEX `Order_ID_idx` (`Order_ID` ASC) VISIBLE,
+  CONSTRAINT `bo_Bill_ID`
+    FOREIGN KEY (`Bill_ID`)
+    REFERENCES `project67`.`bill` (`Bill_ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Order_ID`
+    FOREIGN KEY (`Order_ID`)
+    REFERENCES `project67`.`orders` (`Order_ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `project67`.`cart_item`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `project67`.`cart_item` (
+  `Cart_ID` INT(11) NOT NULL,
+  `Item_ID` INT(11) NOT NULL,
+  PRIMARY KEY (`Cart_ID`, `Item_ID`),
+  INDEX `Item_ID_idx` (`Item_ID` ASC) VISIBLE,
+  CONSTRAINT `Cart_ID`
+    FOREIGN KEY (`Cart_ID`)
+    REFERENCES `project67`.`customer` (`Cart_ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Item_ID`
+    FOREIGN KEY (`Item_ID`)
+    REFERENCES `project67`.`item` (`Item_ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
