@@ -2,6 +2,15 @@ from os import system,name
 from time import sleep
 from Login import *
 from SignUp import *
+import mysql.connector as sql
+import datetime
+
+db = sql.connect(
+    host="localhost",
+    user = "root",
+    passwd = "himraj18",
+    database = "project67"
+)
 
 def clear(): 
 	if name == 'nt': 
