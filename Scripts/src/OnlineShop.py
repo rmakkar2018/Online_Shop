@@ -1,16 +1,9 @@
 from os import system,name
 from time import sleep
-from Login import *
+from Login import loginOptions
 from SignUp import *
 import mysql.connector as sql
 import datetime
-
-db = sql.connect(
-    host="localhost",
-    user = "root",
-    passwd = "himraj18",
-    database = "project67"
-)
 
 def clear(): 
 	if name == 'nt': 
@@ -68,15 +61,28 @@ def initOptions():
 		else:
 			print("Enter a valid option")
 
-if __name__ == '__main__':
-	clear()
-	printIntroduction()
-	sleep(2)
-	initOptions()
+def get_comp_id():
+	return comp_id
+
+def set_comp_id(id):
+	comp_id=id
+
+db = sql.connect(
+	host="localhost",
+	user = "root",
+	passwd = "himraj18",
+	database = "project67"
+)
+comp_id=1
+clear()
+printIntroduction()
+sleep(0.5)
+initOptions()
 
 
 
-""" the clear function is implemented locally in each file, after each logout the user should jump back to the first screen
+""" 
+the clear function is implemented locally in each file, after each logout the user should jump back to the first screen
 so break is added after each action in login type 
 
 """
