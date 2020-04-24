@@ -1,15 +1,17 @@
 from OnlineShop import *;
 
 def searchItem():
-	clear()
-	print("Choose one of the options-")
 	while(True):
+		clear()
+		print("---------------- Searching an Item! -------------------")
+		print("Choose one of the options- ")
 		print("1. Search by Name")
 		print("2. Search by Brand")
 		print("3. Search by Deaprtment")
 		print("4. Back to Previous Menu")
 		s=input("Enter your choice ==> ")
 		print()
+		# here we search for the particular item's primary key corresponding to the input 
 		if(s=='1'):
 			pass
 		elif(s=='2'):
@@ -22,6 +24,7 @@ def searchItem():
 		else:
 			clear()
 			print("Please choose one of the options.")
+			print("")
 
 def repeatOrder():
 	clear()
@@ -73,8 +76,9 @@ def logout():
 			print("Please choose Y/N.")
 
 def enterCustomerMainScreen(uid):
-	print("Hello "+uid);
 	while(True):
+		clear()
+		print("-----------------------"+"Hello "+uid+"--------------------------");
 		print("Choose one of the options-")
 		print("1. Search Items")
 		print("2. Repeat previous Orders")

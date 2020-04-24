@@ -19,11 +19,13 @@ def customerLogin():
 		password = str(input("Password: "))
 		print("")
 		print("1. Login")
-		print("2. Exit")
-		option = int(input("Enter your choice ==> "))
-		if(option == 1):
+		print("2. Back to choosing role screen")
+		#here we have to check for the validity of user
+		option = input("Enter your choice ==> ")
+		if(option == '1'):
 			loginCustomerWithCreds(uid,password);
-		elif(option == 2):
+			break;
+		elif(option == '2'):
 			print("Exiting from Login Portal")
 			break
 		else:
@@ -45,6 +47,7 @@ def supplierLogin():
 		uid = str(input("Supplier Id: "))
 		password = str(input("Password: "))
 		print("")
+		print("Choose an action: ")
 		print("1. Login")
 		print("2. Exit")
 		option = int(input("Enter your choice ==> "))
@@ -85,20 +88,24 @@ def employeeLogin():
 
 def loginOptions():
 	while(True):
-		print("")
-		print("Choose Role")
+		clear()
+		print("------------------------Login Screen---------------------------")
+		print("Choose a Role")
 		print("1. Customer")
 		print("2. Supplier")
 		print("3. Employee")
 		print("4. Exit")
-		option = int(input("Enter your choice ==> "))
-		if(option == 1):
+		option = input("Enter your choice ==> ")
+		if(option == '1'):
 			customerLogin()
-		elif(option == 2):
+			break;
+		elif(option == '2'):
 			supplierLogin()
-		elif(option == 3):
+			break;
+		elif(option == '3'):
 			employeeLogin()
-		elif(option == 4):
+			break;
+		elif(option == '4'):
 			break;
 		else:
 			print("Choose a valid option")

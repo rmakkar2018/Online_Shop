@@ -3,7 +3,7 @@ from os import system,name
 def clear(): 
 	if name == 'nt': 
 		_ = system('cls') 
-	else: 
+	else:
 		_ = system('clear') 
 
 
@@ -15,9 +15,12 @@ def showProfileDetails(uid):
 		print("Some Unexpected error occured. Try Again Later.")
 	
 def fetchUpcomingOrders(uid):
+	#query here
 	pass
 	
-
+def fetchPreviousOrders(uid):
+	#query here
+	pass
 		
 def printUpcomingOrders():
 	clear()
@@ -76,6 +79,7 @@ def showUpcomingOrders(uid):
 				print("Enter a valid option")
 
 def showPreviousOrders(uid):
+	# here uid is the cart id or customer id of the customer
 	if(fetchPreviousOrders(uid) != 1):
 		print("Some Unexpected error occured. Try Again Later.")
 

@@ -21,11 +21,9 @@ def printIntroduction():
 	print("Himanshu Raj(2018038)")
 	print("Rohit Makkar(2018087)")
 	print("Jaspreet Saka(2018237)")
-	print("Ritik Garg(2018307)")
+	print("Ritik Garg(2018305)")
 	print("")
 	print("***************************************************************")
-	print("")
-	print("------------------------Welcome User---------------------------")
 	print("")
 
 def aboutApp():
@@ -39,6 +37,10 @@ def exitCredits():
 
 def initOptions():
 	while(True):
+		clear()
+		print("------------------------Welcome User---------------------------")
+		print("")
+		print("The Online Store: A place to get all you want")
 		print("")
 		print("1. Login")
 		print("2. Sign Up")
@@ -62,3 +64,10 @@ if __name__ == '__main__':
 	printIntroduction()
 	sleep(2)
 	initOptions()
+
+
+
+""" the clear function is implemented locally in each file, after each logout the user should jump back to the first screen
+so break is added after each action in login type 
+
+"""
