@@ -61,11 +61,17 @@ def initOptions():
 		else:
 			print("Enter a valid option")
 
-def get_comp_id():
-	return comp_id
-
-def set_comp_id(id):
-	comp_id=id
+def get_complain_id():
+	cursor=db.cursor()
+	query="Select Max(Complain_ID) from help_feedback;"
+	cursor.execute(query)
+	l=[]
+	for i in cursor:
+		l.append(i)
+	if(l[0][0]==None):
+		return 1
+	else:
+		return l[0][0]+1
 
 db = sql.connect(
 	host="localhost",
@@ -73,7 +79,7 @@ db = sql.connect(
 	passwd = "himraj18",
 	database = "project67"
 )
-comp_id=1
+
 clear()
 printIntroduction()
 sleep(0.5)
