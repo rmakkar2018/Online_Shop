@@ -61,8 +61,12 @@ def searchItem(uid):
 						print("Invalid Entry: "+l[1])
 						f=False
 						break
-					_items.append(l[0])
-					_quantity.append(l[1])
+					if(check_quantity(l[0],l[1])):
+						_items.append(l[0])
+						_quantity.append(l[1])
+					else:
+						print("Please enter quantity less than or equal to available quantity.")
+						continue
 			if(f):
 				items=items+_items[:]
 				quantity=quantity+_quantity[:]
@@ -111,7 +115,8 @@ def searchItem(uid):
 			if(f):
 				items=items+_items[:]
 				quantity=quantity+_quantity[:]
-				print("Items successfully added to cart.")
+				if(len(_items)>0):
+					print("Items successfully added to cart.")
 			else:
 				print("Failed to add items to cart due to invalid entry. Please try again.")
 
@@ -170,7 +175,8 @@ def searchItem(uid):
 		garbage=input()
 	if(len(items)>0):
 		add_to_cart(uid,items,quantity)
-	
+		input()
+
 def repeatOrder(uid,order_id):
 	items=[]
 	quantity=[]
@@ -180,8 +186,12 @@ def repeatOrder(uid,order_id):
 	l=fetchdetails(cursor)
 	print(l)
 	for i in l:
-		items.append(i[0])
-		quantity.append(i[1])
+		if(check_quantity(i[0],i[1])):
+			items.append(i[0])
+			quantity.append(i[1])
+		else:
+			print("Unable to add Item-ID:"+str(i[0])+" due to Insufficient Quantity.")
+			print("Please add from option Search Items.")
 	add_to_cart(uid,items,quantity)
 
 def viewPreviousOrder(uid):
@@ -344,6 +354,7 @@ def logout(uid):
 def enterCustomerMainScreen(uid):
 	while(True):
 		clear()
+		check_cart(uid)
 		print("-----------------------"+"Hello "+str(uid)+"--------------------------");
 		print("Choose one of the options-")
 		print("1. Search Items")
@@ -353,7 +364,7 @@ def enterCustomerMainScreen(uid):
 		print("5. Logout")
 		s=input("Enter your choice ==> ")
 		if(s=='1'):
-			items,quantity=searchItem(uid)
+			searchItem(uid)
 		elif(s=='2'):
 			viewPreviousOrder(uid)
 		elif(s=='3'):
@@ -375,7 +386,6 @@ def add_to_cart(uid,items,quantity):
 	cursor.execute(query1)
 	l=fetchdetails(cursor)
 	cart=l[0][0]
-	print(cart)
 	
 	query2="insert into cart_item values (%s,%s,%s,%s)"
 	for i in range(len(items)):
@@ -383,6 +393,39 @@ def add_to_cart(uid,items,quantity):
 		cursor.execute(query3)
 		price=fetchdetails(cursor)[0][0]
 
-		values=(cart,items[i],quantity[i],price)
-		cursor.execute(query2,values)
+		query4="select count(*) from cart_item where Cart_ID="+str(cart)+" and Item_ID="+str(items[i])+";"
+		cursor.execute(query4)
+		count=fetchdetails(cursor)[0][0]	
+		if(count==0):		
+			values=(cart,items[i],quantity[i],price)
+			cursor.execute(query2,values)
+			db.commit()
+		else:
+			query5="select Quantity from cart_item where Cart_ID="+str(cart)+" and Item_ID="+str(items[i])+";"
+			cursor.execute(query5)
+			qq=fetchdetails(cursor)[0][0]
+			query6="update cart_item set Quantity="+str(qq+quantity[i])+" where Cart_ID="+str(cart)+" and Item_ID="+str(items[i])+";"
+			cursor.execute(query6)
+			db.commit()
+
+def check_quantity(item_id,quantity):
+	query="select Available_Quantity from Item where Item_ID="+str(item_id)+";"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)
+	q=l[0][0]
+	if(q<quantity):
+		return False
+	else:
+		av=q-quantity
+		query="update Item set Available_Quantity="+str(av)+" where Item_ID="+str(item_id)+";"
+		cursor.execute(query)
 		db.commit()
+		return True
+
+def check_cart(uid):
+	query="Select Count(*) from Cart_Item where Cart_ID in (select Cart_ID from Customer where Customer_ID="+str(uid)+");"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)
+	print(l)
