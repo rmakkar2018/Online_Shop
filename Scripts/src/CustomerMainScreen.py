@@ -168,13 +168,83 @@ def searchItem(uid):
 			print()
 		print('Press Enter to proceed.')
 		garbage=input()
-	return items,quantity
-
-def repeatOrder(uid):
-	clear()
+	if(len(items)>0):
+		add_to_cart(uid,items,quantity)
+	
+def repeatOrder(uid,order_id):
+	items=[]
+	quantity=[]
+	query="Select Item_ID, Quantity from Orders where Order_ID="+str(order_id)+";"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)
+	print(l)
+	for i in l:
+		items.append(i[0])
+		quantity.append(i[1])
+	add_to_cart(uid,items,quantity)
 
 def viewPreviousOrder(uid):
 	clear()
+	query="select Order_ID from cart_order where Cart_ID in (select Cart_Id from customer where Customer_ID="+str(uid)+") order by Order_ID desc;"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)
+	orders=[]
+	for i in l:
+		orders.append(i[0])
+	for i in orders:
+		print("Order_ID-"+str(i))
+		show_Orders(i)
+	while(True):
+		print("Choose one of the options-")
+		print("1.Repeat previous order.")
+		print("2.Return to previous menu.")
+		s=input("Enter your choice ==> ")
+		if(s=='1'):
+			try:
+				x=int(input("Enter Order_ID which you want to repeat ==> "))
+			except:
+				print('Invalid Option. Please try again.')
+				continue
+			if(x in orders):
+				repeatOrder(uid,x)
+				break
+			else:
+				print('Invalid Option. Please try again.')
+				continue
+		elif(s=='2'):
+			break
+		else:
+			print('Invalid Option. Please try again.')
+			continue
+
+def show_Orders(order_id):
+	query="select Item_ID from orders where Order_ID="+str(order_id)+";"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)
+	items=[]
+	for i in l:
+		items.append(i[0])
+	for i in items:
+		show_items(i)
+
+def show_items(item_id):
+	cursor=db.cursor()
+	query="Select Item_ID,Name,Company_Name,Price,Available_Quantity from Item where Item_ID="+str(item_id)+";"
+	cursor.execute(query)
+	l=fetchdetails(cursor)
+	print("Following are Items matching with your search-")
+	for i in l:
+		print()
+		print("Item Number- "+str(i[0]))
+		print("Item Name- "+str(i[1]))
+		print("Company- "+str(i[2]))
+		print("Price- "+str(i[3]))
+		print("Available Quantity- "+str(i[4]))
+	print()
+	return
 
 def customerSupport(uid):
 	clear()
@@ -277,23 +347,20 @@ def enterCustomerMainScreen(uid):
 		print("-----------------------"+"Hello "+str(uid)+"--------------------------");
 		print("Choose one of the options-")
 		print("1. Search Items")
-		print("2. Repeat previous Orders")
-		print("3. View previous Orders")
-		print("4. Customer Support or Feedback")
-		print("5. View Profile")
-		print("6. Logout")
+		print("2. View and Repeat previous Orders")
+		print("3. Customer Support or Feedback")
+		print("4. View Profile")
+		print("5. Logout")
 		s=input("Enter your choice ==> ")
 		if(s=='1'):
 			items,quantity=searchItem(uid)
 		elif(s=='2'):
-			repeatOrder(uid)
-		elif(s=='3'):
 			viewPreviousOrder(uid)
-		elif(s=='4'):
+		elif(s=='3'):
 			customerSupport(uid)
-		elif(s=='5'):
+		elif(s=='4'):
 			viewProfile(uid)
-		elif(s=='6'):
+		elif(s=='5'):
 			if(logout(uid)):
 				break
 			else:
@@ -301,3 +368,21 @@ def enterCustomerMainScreen(uid):
 		else:
 			clear()
 			print("Please choose one of the options.")
+
+def add_to_cart(uid,items,quantity):
+	query1="select Cart_ID from Customer where Customer_ID="+str(uid)+";"
+	cursor=db.cursor()
+	cursor.execute(query1)
+	l=fetchdetails(cursor)
+	cart=l[0][0]
+	print(cart)
+	
+	query2="insert into cart_item values (%s,%s,%s,%s)"
+	for i in range(len(items)):
+		query3="select Price from item where Item_ID="+str(items[i])+";"
+		cursor.execute(query3)
+		price=fetchdetails(cursor)[0][0]
+
+		values=(cart,items[i],quantity[i],price)
+		cursor.execute(query2,values)
+		db.commit()
