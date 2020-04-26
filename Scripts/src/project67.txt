@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `project67`.`orders` (
   `Item_ID` INT(11) NOT NULL,
   `Quantity` INT(11) NOT NULL,
   `Price` FLOAT NOT NULL,
-  PRIMARY KEY (`Order_ID`),
+  PRIMARY KEY (`Order_ID`, `Item_ID`),
   INDEX `Item_ID` (`Item_ID` ASC) VISIBLE,
   CONSTRAINT `orders_ibfk_1`
     FOREIGN KEY (`Item_ID`)
@@ -194,12 +194,13 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- Table `project67`.`help_feedback`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `project67`.`help_feedback` (
-  `Compaint_ID` INT(11) NOT NULL,
+  `Complain_ID` INT(11) NOT NULL,
   `Customer_ID` INT(11) NOT NULL,
   `Mobile_No` INT(11) NOT NULL,
   `Email` VARCHAR(45) NULL DEFAULT NULL,
   `Description` VARCHAR(500) NOT NULL,
-  PRIMARY KEY (`Compaint_ID`),
+  `Resolved` TINYINT NULL DEFAULT 0,
+  PRIMARY KEY (`Complain_ID`),
   INDEX `Customer_ID` (`Customer_ID` ASC) VISIBLE,
   CONSTRAINT `help_feedback_ibfk_1`
     FOREIGN KEY (`Customer_ID`)
@@ -375,6 +376,8 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `project67`.`cart_item` (
   `Cart_ID` INT(11) NOT NULL,
   `Item_ID` INT(11) NOT NULL,
+  `Quantity` INT(11) NOT NULL,
+  `Price` FLOAT NOT NULL,
   PRIMARY KEY (`Cart_ID`, `Item_ID`),
   INDEX `Item_ID_idx` (`Item_ID` ASC) VISIBLE,
   CONSTRAINT `Cart_ID`
