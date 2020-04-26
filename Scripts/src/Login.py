@@ -1,4 +1,3 @@
-from SupplierMainScreen import *
 from EmployeeMainScreen import *
 from os import system,name
 
@@ -36,6 +35,7 @@ def supplierDbQuery(uid,password):
 	return 1;
 
 def loginSupplierWithCreds(uid,password):
+	from SupplierMainScreen import enterSupplierMainScreen
 	if(supplierDbQuery(uid,password) == 1):
 		enterSupplierMainScreen(uid);
 	else:

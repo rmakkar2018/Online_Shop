@@ -1,5 +1,4 @@
 from OnlineShop import db,get_complain_id,clear
-from os import system,name
 
 def fetchdetails(cursor):
 	l=[]
@@ -352,10 +351,9 @@ def logout(uid):
 			print("Please choose Y/N.")
 
 def enterCustomerMainScreen(uid):
+	print("-----------------------"+"Hello "+str(uid)+"--------------------------");
 	while(True):
-		clear()
 		check_cart(uid)
-		print("-----------------------"+"Hello "+str(uid)+"--------------------------");
 		print("Choose one of the options-")
 		print("1. Search Items")
 		print("2. View and Repeat previous Orders")
