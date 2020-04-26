@@ -1,11 +1,12 @@
-from CustomerMainScreen import *
 from SupplierMainScreen import *
 from EmployeeMainScreen import *
+from os import system,name
 
 def customerDbQuery(uid,password):
 	return 1;
 
 def loginCustomerWithCreds(uid,password):
+	from CustomerMainScreen import enterCustomerMainScreen
 	if(customerDbQuery(uid,password) == 1):
 		enterCustomerMainScreen(uid);
 	else:
@@ -109,3 +110,9 @@ def loginOptions():
 			break;
 		else:
 			print("Choose a valid option")
+
+def clear(): 
+	if name == 'nt': 
+		_ = system('cls') 
+	else: 
+		_ = system('clear') 

@@ -1,7 +1,9 @@
 from os import system,name
 from time import sleep
-from Login import *
+from Login import loginOptions
 from SignUp import *
+import mysql.connector as sql
+import datetime
 
 def clear(): 
 	if name == 'nt': 
@@ -59,15 +61,34 @@ def initOptions():
 		else:
 			print("Enter a valid option")
 
-if __name__ == '__main__':
-	clear()
-	printIntroduction()
-	sleep(2)
-	initOptions()
+def get_complain_id():
+	cursor=db.cursor()
+	query="Select Max(Complain_ID) from help_feedback;"
+	cursor.execute(query)
+	l=[]
+	for i in cursor:
+		l.append(i)
+	if(l[0][0]==None):
+		return 1
+	else:
+		return l[0][0]+1
+
+db = sql.connect(
+	host="localhost",
+	user = "root",
+	passwd = "himraj18",
+	database = "project67"
+)
+
+clear()
+printIntroduction()
+sleep(0.5)
+initOptions()
 
 
 
-""" the clear function is implemented locally in each file, after each logout the user should jump back to the first screen
+""" 
+the clear function is implemented locally in each file, after each logout the user should jump back to the first screen
 so break is added after each action in login type 
 
 """
