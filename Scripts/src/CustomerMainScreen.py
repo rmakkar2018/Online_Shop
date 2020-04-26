@@ -1,4 +1,5 @@
 from OnlineShop import db,get_complain_id,clear
+from os import system,name
 
 def fetchdetails(cursor):
 	l=[]
@@ -29,6 +30,7 @@ def searchItem(uid):
 			query="Select Item_ID,Name,Company_Name,Price,Available_Quantity from Item where Name like '%"+item_name+"%';"
 			cursor.execute(query)
 			l=fetchdetails(cursor)
+			print(type(l))
 			print("Following are Items matching with your search-")
 			for i in l:
 				print()
@@ -351,9 +353,11 @@ def logout(uid):
 			print("Please choose Y/N.")
 
 def enterCustomerMainScreen(uid):
-	print("-----------------------"+"Hello "+str(uid)+"--------------------------");
 	while(True):
+		# option to add or remove item is not given neither is jump to cart given
+		clear()
 		check_cart(uid)
+		print("-----------------------"+"Hello "+str(uid)+"--------------------------");
 		print("Choose one of the options-")
 		print("1. Search Items")
 		print("2. View and Repeat previous Orders")

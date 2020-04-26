@@ -1,21 +1,17 @@
 from payment import *
-def display_bill(OrderID , Bill_ID):
+from OnlineShop import db,get_complain_id,clear
+from datetime import datetime
 
-    print("_________________________________Store_Name-----------------------")
-    print("Name :" )
-    print("Contact No. : ")
-    print("Date : and time:")
-    print(" ____________________________________________________________________")
-    print("| S.No |  Name  | Quantity | cost | Net Cost | Discount | Total cost |")
-    while(True):
-        Sno= 0
-        Total_cost =0
-        print("| Sno |  Name  | Quantity | cost |cost * Quantity | Discount | Net - Discount |")
-        print("--------------------------------------------------------------------------------")
-        Sno=Sno+1
-        Total_cost = total_cost +Total_cost
-    print("-----------------------------------------------------Total Amount : Total_cost--")
-    print("--------------------------------------------------------------------------------")
+def display_bill(OrderID,total_amount):
+    bill_id=6969
+    # bill_id is to be fetched
+    #
+    cursor = db.cursor()
+    query = "Insert into bill_orders values( '%" + bill_id + "%','%" + OrderID + "%');"
+    cursor.execute(query)
+
+    query = "Insert into bill values('%" + bill_id + "%','%" + total_amount + "%','%" + 0 + "%', '%" + 0 + "%','%" + datetime.date(datetime.now()) + "%','%" + datetime.time(datetime.now()) + "%');"
+    cursor.execute(query)
 
 def take_conformation():
     while (True):
@@ -26,6 +22,7 @@ def take_conformation():
         option = int(input("Enter your choice ==> "))
         if (option == 1):
             print("proceeding to payment portal")
+            sleep(1)
             payment_type()
         elif (option == 2):
             break
