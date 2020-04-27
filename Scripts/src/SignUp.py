@@ -30,11 +30,18 @@ def dbCustomerReg(name,email,mobile,address,credit_card,password,confPassword):
 	print("")
 	print("Registring Customer.........................")
 	try:
+
 		cursor.execute(query,value)
+
 		reg_ID_Pass(id,password)
+
 		update_id(id-1,2)
-		print("ID Assigned- "+str(id))
+		print("--------------------------------------------------")
+		print("ID Assigned- "+ str(id))
+		print("ID Assigned- " + str(id))
+		print("ID Assigned- " + str(id))
 	except:
+
 		return 0
 	return 1
 

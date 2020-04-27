@@ -1,25 +1,26 @@
 from payment import *
-from OnlineShop import db,get_complain_id,clear
+from global_db import *
 
-def payment_type():
-    while (True):
-        print("")
-        print("1. Pay via Debit or Credit Card")
-        print("2. Exit")
+# def makepayment():
+#     while (True):
+#         print("")
+#         print("1. Pay via Debit or Credit Card")
+#         print("2. Exit")
+#
+#         option = int(input("Enter your choice ==> "))
+#         if (option == 1):
+#             credit_debit(1234)
+#         #     go back to home page
+#         elif (option == 2):
+#             break
+#         else:
+#             print("Enter a valid option")
 
-        option = int(input("Enter your choice ==> "))
-        if (option == 1):
-            credit_debit(1234)
-        #     go back to home page
-        elif (option == 2):
-            break
-        else:
-            print("Enter a valid option")
 
 
-
-def show_card(CustID):
+def make_payment(CustID):
     #print("here we show his credit card/debit card")
+    done_payment=False
     cursor = db.cursor()
     query = "Select Card_ID from customer_card where Customer_ID='%" + CustID + "%';"
     cursor.execute(query)
@@ -40,7 +41,7 @@ def show_card(CustID):
             continue
 
         print("")
-        print("1. Enter Password to pay")
+        print("1. Enter CVV to pay")
         print("2. Exit")
 
         option = input("Enter your choice ==> ")
@@ -56,14 +57,17 @@ def show_card(CustID):
             if(password==inp):
                 clear()
                 print("Payment successfull")
+                done_payment=True
                 #now we have to add it to the tables
             else:
                 clear()
                 print("Wrong CVV....................")
                 print("payment cancelled..............")
-                sleep(3)
-                continue;
+            break
+
+
         elif (option == '2'):
             break
         else:
             print("Enter a valid option")
+    return done_payment;

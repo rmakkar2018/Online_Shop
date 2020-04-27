@@ -1,5 +1,5 @@
 from global_db import *
-
+from cart import *
 def searchItem(uid):
 	items=[]
 	quantity=[]
@@ -357,7 +357,8 @@ def enterCustomerMainScreen(uid):
 		print("2. View and Repeat previous Orders")
 		print("3. Customer Support or Feedback")
 		print("4. View Profile")
-		print("5. Logout")
+		print("5. Go to cart")
+		print("6. Logout")
 		s=input("Enter your choice ==> ")
 		if(s=='1'):
 			searchItem(uid)
@@ -368,6 +369,8 @@ def enterCustomerMainScreen(uid):
 		elif(s=='4'):
 			viewProfile(uid)
 		elif(s=='5'):
+			cart_option(uid)
+		elif(s=='6'):
 			if(logout(uid)):
 				break
 			else:
