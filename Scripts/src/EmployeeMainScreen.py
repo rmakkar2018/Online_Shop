@@ -17,8 +17,7 @@ def enterEmployeeMainScreen(uid):
 		option = input("Enter your choice ==> ")
 		if(option == '1'):
 			markattendance(uid)
-		elif(opt
-			ion == '2'):
+		elif(option == '2'):
 			viewprofile(uid)
 		elif(option == '3'):
 			view_previous_order()
@@ -90,10 +89,10 @@ def Search_anyorder():
 			Search_customerID(CustomerID)
 		elif option == '2':
 			print("")
-			Date = input(" Enter the Date: ")
+			Date = input("Enter the Date: ")
 			Search_date(Date)
 		elif option == '3':
-			itemID = input(" Enter the itemID: ")
+			itemID = input("Enter the itemID: ")
 			Search_itemID(itemID)
 		elif option=='4':
 			clear()
@@ -128,4 +127,3 @@ def customer_complaints():
 	clear()
 	compliantID = input(" Enter the compliant ID: ")
 	print("The complaint has been resolved.")
-	# make the issue variable in the table to true

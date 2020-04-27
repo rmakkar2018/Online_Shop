@@ -323,14 +323,13 @@ def viewProfile(uid):
 	query="Select * from Customer where Customer_ID="+str(uid)+";"
 	cursor.execute(query)
 	l=fetchdetails(cursor)
-	#print(l)
-	print("Customer ID: "+str(l[0][0]))
-	print("Name: "+str(l[0][1]))
-	print("Mobile No: "+str(l[0][2]))
-	print("Address: "+str(l[0][3]))
-	print("Email-ID: "+str(l[0][4]))
-	print("Credits: "+str(l[0][5]))
-	#print("Cart-ID: "+str(l[0][6]))
+	for i in l:
+		print("Customer ID: "+str(i[0]))
+		print("Name: "+str(i[1]))
+		print("Mobile No: "+str(i[2]))
+		print("Address: "+str(i[3]))
+		print("Email-ID: "+str(i[4]))
+		print("Credit Card: "+str(i[5]))
 	print('Press Enter to return.')
 	garbage=input()
 
