@@ -61,6 +61,7 @@ def Register_manager():
 	except:
 		print("Registration Failed. Please Try Again.")
 		return
+	update_id(id-1,1)
 	print("The Manager has been registered.")
 	print("Manager ID- "+str(id))
 	print("Welcome to the Team")
