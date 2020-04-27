@@ -28,10 +28,7 @@ def loginCustomerWithCreds(uid,password):
 		print("Login Failed")
 
 def customerLogin():
-	f=False
 	while(True):
-		if(f):
-			break
 		print("")
 		print("---------------------Customer Login---------------------")
 		uid = str(input("Customer Id: "))
@@ -41,8 +38,7 @@ def customerLogin():
 		print("2. Exit")
 		option = input("Enter your choice ==> ")
 		if(option == '1'):
-			f=True
-			loginCustomerWithCreds(uid,password)
+			loginCustomerWithCreds(uid,password);
 		elif(option == '2'):
 			print("")
 			print("Exiting from Login Portal")
