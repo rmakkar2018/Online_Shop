@@ -52,4 +52,3 @@ def reg_ID_Pass(id,password):
 	cursor=db.cursor()
 	cursor.execute(query,value)
 	db.commit()	
-

@@ -132,7 +132,7 @@ def managerDbQuery(uid,password):
 	return check_id_pass(uid,password)
 
 def loginManagerWithCreds(uid,password):
-	from ManagerMainScreen import enterEmployeeMainScreen
+	from ManagerMainScreen import enterManagerMainScreen
 	if(employeeDbQuery(uid,password) == 1):
 		enterManagerMainScreen(uid);
 	else:
