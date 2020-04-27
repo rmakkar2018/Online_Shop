@@ -72,20 +72,26 @@ def viewCustomers():
 		if(s=='1'):
 			for i in customers:
 				print("ID- "+str(i[0])+"\tName- "+str(i[1]))
-		if(s=='2'):
+		elif(s=='2'):
 			x=input("Enter Customer ID - ")
 			x=int(x)
 			f=False
-			for i in customers:
-				if(int(x)==i[0]):
-					f=True
-					break
-			if(not f):
-				print("No Such Customer.")
-			else:
-				specificCustomerDetail(x)
-			# except:
-			# 	print("Invalid Customer ID")
+			try:
+				for i in customers:
+					if(int(x)==i[0]):
+						f=True
+						break
+				if(not f):
+					print("No Such Customer.")
+				else:
+					specificCustomerDetail(x)
+			except:
+				print("Invalid Customer ID")
+		elif(s=='3'):
+			clear()
+			break
+		else:
+			print("Invalid Input. Please try again.")
 
 def viewEmployees(uid):
 	clear()
@@ -123,10 +129,15 @@ def viewEmployeeAttendance(uid):
 			f=True
 			break
 	if(f):
-		pass
+		print("Following are the dates when the employee was present-")
+		query="select Date from Attendance where Employee_ID="+str(empid)+" and Attendance=1;"
+		cursor=db.cursor()
+		cursor.execute(query)
+		atten=fetchdetails(cursor)
+		for i in atten:
+			print(i[0])
 	else:
 		print("Either Invalid Employee ID or this employee is not under you.")
-
 
 def dbEmployeeRegistration(uid,name,mobile,email,address,salary,password,confPassword):
 	id = fetch_id()+1
@@ -173,6 +184,19 @@ def registerEmployee(uid):
 def viewProfile(uid):
 	clear()
 	print("---------------------------Manager Profile-----------------------------------")
+	query="Select * from Manager where Manager_ID="+str(uid)+";"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)
+	for i in l:
+		print("Manager ID- "+str(i[0]))
+		print("Name- "+str(i[1]))
+		print("Department- "+str(i[3]))
+		print("Mobile- "+str(i[7]))
+		print("Email- "+str(i[4]))
+		print("Address- "+str(i[5]))
+		print("Salary- "+str(i[2]))
+		print("Hire Date- "+str(i[6]))
 
 def enterManagerMainScreen(uid):
 	clear()
@@ -180,25 +204,22 @@ def enterManagerMainScreen(uid):
 	while (True):
 		print("1. View Customers")
 		print("2. View Employees")
-		print("3. View Orders")
-		print("4. View Employee Attendance")
-		print("5. Register Employee")
-		print("6. View Profile")
-		print("7. Log Out")
+		print("3. View Employee Attendance")
+		print("4. Register Employee")
+		print("5. View Profile")
+		print("6. Log Out")
 		option = input("Enter your choice ==> ")
 		if(option =='1'):
 			viewCustomers()
 		elif(option == '2'):
 			viewEmployees()
 		elif(option == '3'):
-			viewOrders()
-		elif(option == '4'):
 			viewEmployeeAttendance(uid)
-		elif(option == '5'):
+		elif(option == '4'):
 			registerEmployee(uid)
-		elif(option == '6'):
+		elif(option == '5'):
 			viewProfile(uid)
-		elif(option == '7'):
+		elif(option == '6'):
 			clear()
 			print("---------------------Login Portal---------------------")
 			break

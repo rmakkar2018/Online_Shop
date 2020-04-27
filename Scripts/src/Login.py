@@ -1,7 +1,7 @@
 from global_db import *
 
 def check_id_pass(id,password):
-	query="Select count(id) from ID_Pass where id="+str(id)+" and password="+password+";"
+	query="Select count(id) from ID_Pass where id="+str(id)+" and password='"+str(password)+"';"
 	cursor=db.cursor()
 	cursor.execute(query)
 	l=fetchdetails(cursor)[0][0]
