@@ -24,25 +24,24 @@ for year in range(2000,2020):
 
 	for month in range(1,13):
 		total_no_days=30
-		if(month==1 or month==5 or month==7 or month==8 or month==10 or month==12):
+		if(month==1 or month==3 or month==5 or month==7 or month==8 or month==10 or month==12):
 			total_no_days=31
-		if(month==3):
+		if(month==2):
 			if(is_leap_year):
 				total_no_days=29
 			else:
 				total_no_days=28
 		for day in range(1,total_no_days+1):
-			today_date=str(day)+"-"+str(month)+"-"+str(year)
+			today_date=datetime(year,month,day)
+			#print(today_date)
 			for item_id in range(6,19):
 				attr=[]
-				attr.append(str(today_date))
-				attr.append(str(item_id))
+				attr.append(today_date)
+				attr.append(item_id)
 				sold_num=randint(10,100)
 				attr.append(sold_num)
 				query="Insert Into prediction Values (%s,%s,%s);"
 				cursor.execute(query,attr)
 				db.commit()
-
-
 
 #the predicted value column has to be removed before using this code

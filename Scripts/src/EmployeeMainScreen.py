@@ -17,7 +17,8 @@ def enterEmployeeMainScreen(uid):
 		option = input("Enter your choice ==> ")
 		if(option == '1'):
 			markattendance(uid)
-		elif(option == '2'):
+		elif(opt
+			ion == '2'):
 			viewprofile(uid)
 		elif(option == '3'):
 			view_previous_order()
