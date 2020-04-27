@@ -169,7 +169,6 @@ def searchItem(uid):
 		garbage=input()
 	if(len(items)>0):
 		add_to_cart(uid,items,quantity)
-		input()
 
 def repeatOrder(uid,order_id):
 	items=[]
@@ -424,5 +423,8 @@ def check_cart(uid):
 	query="Select Count(*) from Cart_Item where Cart_ID in (select Cart_ID from Customer where Customer_ID="+str(uid)+");"
 	cursor=db.cursor()
 	cursor.execute(query)
-	l=fetchdetails(cursor)
-	print(l)
+	l=fetchdetails(cursor)[0][0]
+	if(l==0):
+		return False
+	else:
+		return True
