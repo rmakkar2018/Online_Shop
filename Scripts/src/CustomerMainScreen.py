@@ -1,11 +1,4 @@
-from OnlineShop import db,get_complain_id,clear
-from os import system,name
-
-def fetchdetails(cursor):
-	l=[]
-	for i in cursor:
-		l.append(i)
-	return l
+from global_db import *
 
 def searchItem(uid):
 	items=[]
@@ -279,7 +272,8 @@ def customerSupport(uid):
 			print("Leave a feedback. Your feedback is important to us.")
 			print("Kindly enter all your feedback and then press Enter")
 			feedback="FEEDBACK: "+input("Feedback- ")
-			cmpid=get_complain_id()
+			cmpid=fetch_id()+1
+			update_id(cmpid-1,1)
 			
 			query="Select Mobile_No,Email from Customer where Customer_ID="+str(uid)+";"
 			cursor.execute(query)
@@ -287,7 +281,7 @@ def customerSupport(uid):
 			#print(details)
 			
 			query="insert into help_feedback values (%s,%s,%s,%s,%s);"
-			values=(cmpid,uid,details[0][0],details[0][1],feedback)
+			values=(cmpid,uid,details[0][0],details[0][1],feedback,False)
 			cursor.execute(query,values)
 			db.commit()
 			
@@ -299,15 +293,16 @@ def customerSupport(uid):
 			print("Register a complain. Apologies for inconvenience caused.")
 			print("Kindly enter all your complain and then press Enter")
 			feedback="COMPLAIN: "+input("Complain- ")
-			cmpid=get_complain_id()
-			
+			cmpid=fetch_id()+1
+			update_id(cmpid-1,1)
+
 			query="Select Mobile_No,Email from Customer where Customer_ID="+str(uid)+";"
 			cursor.execute(query)
 			details=fetchdetails(cursor)
 			#print(details)
 			
 			query="insert into help_feedback values (%s,%s,%s,%s,%s);"
-			values=(cmpid,uid,details[0][0],details[0][1],feedback)
+			values=(cmpid,uid,details[0][0],details[0][1],feedback,False)
 			cursor.execute(query,values)
 			db.commit()
 

@@ -1,23 +1,5 @@
-from OnlineShop import db,get_complain_id,clear
+from global_db import *
 import datetime
-
-def fetchdetails(cursor):
-	l=[]
-	for i in cursor:
-		l.append(i)
-	return l
-
-def logout(uid):
-	while(True):
-		print("Do you want to logout?(Y/N)")
-		s=input()
-		if(s=='Y'):
-			return True
-		elif(s=='N'):
-			return False
-		else:
-			clear()
-			print("Please choose Y/N.")
 
 def viewProfile(uid):
 	clear()
@@ -128,57 +110,7 @@ def view_items_supplied(uid):
 						continue
 				query="update Item set Available_Quantity="+str(av+q)+" where Item_ID="+str(item_id)+";"
 		elif(s=='5'):
-			clear()
-			item_id=item_id_assign()
-			print("Item_ID Assigned-")
-			name=input("Item Name- ")
-			brand=input("Company Name- ")
-			item_type=input("Item Type- ")
-			while(True):
-				try:
-					quantity=int(input("Quantity- "))
-					if(quantity<=0):
-						print("Invalid Quantity. Must be a number greater than 0.")
-						continue
-					else:
-						break
-				except:
-					print("Invalid Quantity. Must be a number greater than 0.")
-					continue
-			while(True):
-				try:
-					price=float(input("Price- "))
-					if(price<=0):
-						print("Invalid Price. Must be a number greater than 0.")
-						continue
-					else:
-						break
-				except:
-					print("Invalid Price. Must be a number greater than 0.")
-					continue
-			while(True):
-				try:
-					mfg_date=input("Enter Manufacturing Date (in YYYY-MM-DD format)- ")
-					mfg_date=list(int,mfg_date.split('-'))
-					mfg_date=datetime.datetime(mfg_date[0],mfg_date[1],mfg_date[2])
-					break
-				except:
-					print("Invalid Date. Try Again.")
-					continue
-			while(True):
-				try:
-					exp_date=input("Enter Manufacturing Date (in YYYY-MM-DD format)- ")
-					exp_date=list(int,exp_date.split('-'))
-					exp_date=datetime.datetime(exp_date[0],exp_date[1],exp_date[2])
-					break
-				except:
-					print("Invalid Date. Try Again.")
-					continue
-			query="insert into item value (%s,%s,%s,%s,%s,%s,%s,%s)"
-			value=(item_id,name,brand,item_type,price,quantity,mfg_date,exp_date)
-			cursor=db.cursor()
-			cursor.execute(query,value)
-			db.commit()
+			add_new_item(uid)
 		elif(s=='6'):
 			clear()
 			break
@@ -198,7 +130,7 @@ def enterSupplierMainScreen(uid):
 		if(s=='1'):
 			view_items_supplied(uid)
 		elif(s=='2'):
-			add_new_items(uid)
+			add_new_item(uid)
 		elif(s=='3'):
 			viewProfile(uid)
 		elif(s=='4'):
@@ -210,5 +142,61 @@ def enterSupplierMainScreen(uid):
 			clear()
 			print("Please choose one of the options.")
 
-def item_id_assign():
-	return 123
+def add_new_item(uid):
+	clear()
+	item_id=fetch_id()+1
+	update_id(item_id-1,1);
+	print("Item_ID Assigned- "+str(item_id))
+	name=input("Item Name- ")
+	brand=input("Company Name- ")
+	item_type=input("Item Type- ")
+	while(True):
+		try:
+			quantity=int(input("Quantity- "))
+			if(quantity<=0):
+				print("Invalid Quantity. Must be a number greater than 0.")
+				continue
+			else:
+				break
+		except:
+			print("Invalid Quantity. Must be a number greater than 0.")
+			continue
+	while(True):
+		try:
+			price=float(input("Price- "))
+			if(price<=0):
+				print("Invalid Price. Must be a number greater than 0.")
+				continue
+			else:
+				break
+		except:
+			print("Invalid Price. Must be a number greater than 0.")
+			continue
+	while(True):
+		try:
+			mfg_date=input("Enter Manufacturing Date (in YYYY-MM-DD format)- ")
+			mfg_date=list(map(int,mfg_date.split('-')))
+			mfg_date=datetime.datetime(mfg_date[0],mfg_date[1],mfg_date[2])
+			break
+		except:
+			print("Invalid Date. Try Again.")
+			continue
+	while(True):
+		try:
+			exp_date=input("Enter Expiry Date (in YYYY-MM-DD format)- ")
+			exp_date=list(map(int,exp_date.split('-')))
+			exp_date=datetime.datetime(exp_date[0],exp_date[1],exp_date[2])
+			break
+		except:
+			print("Invalid Date. Try Again.")
+			continue
+	query1="insert into item value (%s,%s,%s,%s,%s,%s,%s,%s);"
+	value1=(item_id,name,brand,item_type,price,quantity,mfg_date,exp_date)
+	cursor=db.cursor()
+	cursor.execute(query1,value1)
+	db.commit()
+	query2="insert into supplier_item value (%s,%s);"
+	value2=(uid,item_id)
+	cursor=db.cursor()
+	cursor.execute(query1,value1)
+	db.commit()
