@@ -1,30 +1,29 @@
 from global_db import *
 from Login import *
+from datetime import date
 
 def enterEmployeeMainScreen(uid):
 	print("----------------Hello"+uid+"----------------------")
 	# he can mark the attendance of that day
 	# he can view only his profile
+	f=False
 	while(True):
 		print("")
 		print("1. Mark attendance")
 		print("2. View Profile")
-		print("3. View upcoming orders")
-		print("4. View previous orders")
-		print("5. Customer Complaints")
-		print("6. Logout")
+		print("3. View previous orders")
+		print("4. Customer Complaints")
+		print("5. Logout")
 		option = input("Enter your choice ==> ")
 		if(option == '1'):
 			markattendance(uid)
 		elif(option == '2'):
 			viewprofile(uid)
 		elif(option == '3'):
-			view_upcoming_order()
-		elif(option == '4'):
 			view_previous_order()
-		elif(option == '5'):
-			Customer_complaints()
-		elif option == '6':
+		elif(option == '4'):
+			customer_complaints()
+		elif option == '5':
 			clear()
 			break
 		else:
@@ -33,37 +32,40 @@ def enterEmployeeMainScreen(uid):
 def markattendance(uid):
 	# mark the attendance in the attendance table
 	clear()
-	#
-	print("Attendance marked for uid: " + uid + "\n Have a good day.")
-
+	ddate=date.today()
+	now = datetime.now()
+	current_time = now.strftime("%H:%M:%S")
+	query="select count(*) from Attendance where Employee_ID="+str(uid)+" and Date="+str(ddate)+";"
+	cursor=db.cursor()
+	cursor.execute(query,value)
+	l=fetchdetails(cursor)[0][0]
+	if(l==0):
+		query="insert into Attendance value (%s,%s,%s,%s)"
+		value=(uid,ddate,True,current_time)
+		cursor.execute(query,value)
+		db.commit()	
+		print("Attendance marked.")
+		print("Have a good day.")
+	else:
+		print("Attendance already marked.")
 
 def viewprofile(uid):
 	# employee can view only his profile
 	clear()
 	print("----------------------PROFILE---------------------------")
-	#
+	query="Select * from Employee where Employee_ID="+str(uid)+";"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)
+	for i in l:
+		print("Employee ID- "+str(i[0]))
+		print("Name- "+str(i[1]))
+		print("Mobile- "+str(i[2]))
+		print("Email- "+str(i[3]))
+		print("Address- "+str(i[5]))
+		print("Salary- "+str(i[4]))
+		print("Hire Date- "+str(i[6]))
 	return
-
-def view_upcoming_order():
-	# search order -> customerID date itemID
-	clear()
-	#script to print all orders
-	while True:
-		print("")
-		print(" Choose any action ")
-		print("1. Get details of any sepcific order")
-		print("2. Search any order")
-		print("3. Go back")
-		option = input(" Enter your choice: ")
-		if option == '1':
-			Specific_order()
-		elif option == '2':
-			Search_anyorder()
-		elif option == '3':
-			clear()
-			break
-		else:
-			print(" Enter a vaild choice: ")
 
 def Specific_order():
 	orderID = input(" Enter the order ID of the order to be searched: ")
@@ -121,7 +123,7 @@ def view_previous_order():
 	#script to get the order details
 	print("The details are: ")
 
-def Customer_complaints():
+def customer_complaints():
 	clear()
 	compliantID = input(" Enter the compliant ID: ")
 	print("The complaint has been resolved.")
