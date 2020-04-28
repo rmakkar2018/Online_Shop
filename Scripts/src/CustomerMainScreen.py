@@ -1,5 +1,6 @@
 from global_db import *
 from cart import *
+from time import sleep
 
 def searchItem(uid):
 	items=[]
@@ -24,8 +25,14 @@ def searchItem(uid):
 			query="Select Item_ID,Name,Company_Name,Price,Available_Quantity from Item where Name like '%"+item_name+"%';"
 			cursor.execute(query)
 			l=fetchdetails(cursor)
+			if(len(l)==0):
+				print("No Item Available.")
+				sleep(1)
+				continue
 			print("Following are Items matching with your search-")
+			store=[]
 			for i in l:
+				store.append(i[0])
 				print()
 				print("Item Number- "+str(i[0]))
 				print("Item Name- "+str(i[1]))
@@ -48,6 +55,10 @@ def searchItem(uid):
 				else:
 					try:
 						l[0]=int(l[0])
+						if(l[0] not in store):
+							print("Invalid Entry: "+str(l[0]))
+							f=False
+							break	
 					except:
 						print("Invalid Entry: "+l[0])
 						f=False
@@ -63,7 +74,8 @@ def searchItem(uid):
 						_quantity.append(l[1])
 					else:
 						print("Please enter quantity less than or equal to available quantity.")
-						continue
+						f=False
+						break
 			if(f):
 				items=items+_items[:]
 				quantity=quantity+_quantity[:]
@@ -76,6 +88,10 @@ def searchItem(uid):
 			query="Select Item_ID,Name,Company_Name,Price,Available_Quantity from Item where Company_Name like '%"+brand_name+"%';"
 			cursor.execute(query)
 			l=fetchdetails(cursor)
+			if(len(l)==0):
+				print("No Item Available.")
+				sleep(1)
+				continue
 			print("Following are Items matching with your search-")
 			for i in l:
 				print()
@@ -123,6 +139,10 @@ def searchItem(uid):
 			query="Select Item_ID,Name,Company_Name,Price,Available_Quantity from Item where Deaprtment like '%"+dept_name+"%';"
 			cursor.execute(query)
 			l=fetchdetails(cursor)
+			if(len(l)==0):
+				print("No Item Available.")
+				sleep(1)
+				continue
 			print("Following are Items matching with your search-")
 			for i in l:
 				print()
@@ -180,14 +200,15 @@ def repeatOrder(uid,order_id):
 	cursor=db.cursor()
 	cursor.execute(query)
 	l=fetchdetails(cursor)
-	print(l)
 	for i in l:
 		if(check_quantity(i[0],i[1])):
 			items.append(i[0])
 			quantity.append(i[1])
 		else:
-			print("Unable to add Item-ID:"+str(i[0])+" due to Insufficient Quantity.")
+			print()
+			print("Unable to add Item-ID: "+str(i[0])+" due to Insufficient Quantity.")
 			print("Please add from option Search Items.")
+			sleep(2)
 	add_to_cart(uid,items,quantity)
 
 def viewPreviousOrder(uid):
@@ -196,6 +217,11 @@ def viewPreviousOrder(uid):
 	cursor=db.cursor()
 	cursor.execute(query)
 	l=fetchdetails(cursor)
+	if(len(l)==0):
+		print("No Previous Orders.")
+		sleep(1)
+		clear()
+		return
 	orders=[]
 	for i in l:
 		orders.append(i[0])
@@ -242,17 +268,15 @@ def show_items(item_id):
 	query="Select Item_ID,Name,Company_Name,Price,Available_Quantity from Item where Item_ID="+str(item_id)+";"
 	cursor.execute(query)
 	l=fetchdetails(cursor)
-	print("Following are Items matching with your search-")
 	for i in l:
-		print()
-		print("Item Number- "+str(i[0]))
-		print("Item Name- "+str(i[1]))
-		print("Company- "+str(i[2]))
-		print("Price- "+str(i[3]))
-		print("Available Quantity- "+str(i[4]))
+		print("=> Item Number- "+str(i[0]))
+		print("=> Item Name- "+str(i[1]))
+		print("=> Company- "+str(i[2]))
+		print("=> Price- "+str(i[3]))
+		print("=> Available Quantity- "+str(i[4]))
 		percentage=fetchoffer(i[0])
 		if(percentage>0):
-			print("Discount: "+str(percentage)+"%")
+			print("=> Discount: "+str(percentage)+"%")
 	print()
 	return
 
@@ -338,6 +362,7 @@ def viewProfile(uid):
 	print('Press Enter to return.')
 	garbage=input()
 	clear()
+
 def logout(uid):
 	while(True):
 		print("Do you want to logout?(Y/N)")
@@ -354,7 +379,6 @@ def enterCustomerMainScreen(uid):
 	while(True):
 		# option to add or remove item is not given neither is jump to cart given
 		clear()
-		check_cart(uid)
 		print("-----------------------"+"Hello "+str(uid)+"--------------------------");
 		print("Choose one of the options-")
 		print("1. Search Items")
@@ -373,15 +397,23 @@ def enterCustomerMainScreen(uid):
 		elif(s=='4'):
 			viewProfile(uid)
 		elif(s=='5'):
-			cart_option(uid)
+			if(check_cart(uid)):
+				cart_option(uid)
+			else:
+				print()
+				print("No Items in your Cart.")
+				sleep(1)
+				clear()
 		elif(s=='6'):
 			if(logout(uid)):
+				clear()
 				break
 			else:
 				clear()
 		else:
 			clear()
 			print("Please choose one of the options.")
+			sleep(1)
 
 def add_to_cart(uid,items,quantity):
 	query1="select Cart_ID from Customer where Customer_ID="+str(uid)+";"
@@ -416,6 +448,8 @@ def check_quantity(item_id,quantity):
 	cursor=db.cursor()
 	cursor.execute(query)
 	l=fetchdetails(cursor)
+	if(l==0):
+		return False
 	q=l[0][0]
 	if(q<quantity):
 		return False
@@ -424,14 +458,4 @@ def check_quantity(item_id,quantity):
 		query="update Item set Available_Quantity="+str(av)+" where Item_ID="+str(item_id)+";"
 		cursor.execute(query)
 		db.commit()
-		return True
-
-def check_cart(uid):
-	query="Select Count(*) from Cart_Item where Cart_ID in (select Cart_ID from Customer where Customer_ID="+str(uid)+");"
-	cursor=db.cursor()
-	cursor.execute(query)
-	l=fetchdetails(cursor)[0][0]
-	if(l==0):
-		return False
-	else:
 		return True

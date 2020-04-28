@@ -28,6 +28,7 @@ def check(email):
 		return 1
 	else:
 		return 0
+
 def fetchdetails(cursor):
 	l=[]
 	for i in cursor:
@@ -99,6 +100,26 @@ def fetchbill(order_id):
 	cursor.execute(query)
 	l=fetchdetails(cursor)
 	for i in l:
-		print("Date and Time- "+str(i[2])+" "+str(i[1]))
-		print("Total Amount- "+str(i[3]))
+		print("=> Date and Time- "+str(i[2])+" "+str(i[1]))
+		print("=> Total Amount- "+str(i[3]))
+		print("---------------------------------------------------")
 		
+def check_cart(uid):
+	query="Select Count(*) from Cart_Item where Cart_ID in (select Cart_ID from Customer where Customer_ID="+str(uid)+");"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)[0][0]
+	if(l==0):
+		return False
+	else:
+		return True
+
+def check_cart2(id):
+	query="Select Count(*) from Cart_Item where Cart_ID="+str(id)+";"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)[0][0]
+	if(l==0):
+		return False
+	else:
+		return True

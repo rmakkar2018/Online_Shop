@@ -1,31 +1,34 @@
 from global_db import *
 import datetime
+from time import sleep
 
 def viewProfile(uid):
 	clear()
+	print("----------------SUPPLIER PROFILE----------------")
 	query="Select * from Supplier where Supplier_ID="+str(uid)+";"
 	cursor=db.cursor()
 	cursor.execute(query)
 	l=fetchdetails(cursor)
 	for i in l:
-		print("Supplier ID: "+str(i[0]))
-		print("Name: "+str(i[1]))
-		print("Mobile No: "+str(i[2]))
-		print("Email-ID: "+str(i[3]))
-		print("Address: "+str(i[4]))
-		print("GST No.: "+str(i[5]))
+		print("=> Supplier ID: "+str(i[0]))
+		print("=> Name: "+str(i[1]))
+		print("=> Mobile No: "+str(i[2]))
+		print("=> Email-ID: "+str(i[3]))
+		print("=> Address: "+str(i[4]))
+		print("=> GST No.: "+str(i[5]))
 	print('Press Enter to return.')
 	garbage=input()
 
 def view_items_supplied(uid):
 	while(True):
+		clear()
 		print("Please choose one of the options.")
 		print("1. View all items supplied by you.")
 		print("2. Search items supplied by you through filters.")
 		print("3. View items having less than 10 units left.")
 		print("4. Refill an Item Quantity.")
 		print("5. Add new Item.")
-		print("6. Back to previous menu.")
+		print("6. Back to previous menu.\n")
 		s=input("Enter your choice ==> ")
 		if(s=='1'):
 			clear()
@@ -33,13 +36,21 @@ def view_items_supplied(uid):
 			cursor=db.cursor()
 			cursor.execute(query)
 			l=fetchdetails(cursor)
+			if(len(l)==0):
+				print("No Items Supplied by you.")
+				sleep(2)
+				clear()
+				continue
 			for i in l:
 				print()
-				print("Item Number- "+str(i[0]))
-				print("Item Name- "+str(i[1]))
-				print("Company- "+str(i[2]))
-				print("Price- "+str(i[3]))
-				print("Available Quantity- "+str(i[4]))
+				print("=> Item Number- "+str(i[0]))
+				print("=> Item Name- "+str(i[1]))
+				print("=> Company- "+str(i[2]))
+				print("=> Price- "+str(i[3]))
+				print("=> Available Quantity- "+str(i[4]))
+				print("---------------------------------------------")
+			print("Press Enter to Proceed")
+			input()
 		elif(s=='2'):
 			clear()
 			print("1. Enter Name or Press ENTER to not to apply this filter.")
@@ -52,30 +63,46 @@ def view_items_supplied(uid):
 			cursor=db.cursor()
 			cursor.execute(query)
 			l=fetchdetails(cursor)
+			if(len(l)==0):
+				print("No such Items Supplied by you.")
+				sleep(2)
+				clear()
+				continue
 			for i in l:
 				print()
-				print("Item Number- "+str(i[0]))
-				print("Item Name- "+str(i[1]))
-				print("Company- "+str(i[2]))
-				print("Price- "+str(i[3]))
-				print("Available Quantity- "+str(i[4]))
+				print("=> Item Number- "+str(i[0]))
+				print("=> Item Name- "+str(i[1]))
+				print("=> Company- "+str(i[2]))
+				print("=> Price- "+str(i[3]))
+				print("=> Available Quantity- "+str(i[4]))
+				print("---------------------------------------------")
+			print("Press Enter to Proceed")
+			input()
 		elif(s=='3'):
 			clear()
 			query="Select Item_ID,Name,Company_Name,Price,Available_Quantity from Item where Available_Quantity<10 and Item_ID in (select Item_ID from supplier_item where Supplier_ID="+str(uid)+");"
 			cursor=db.cursor()
 			cursor.execute(query)
 			l=fetchdetails(cursor)
+			if(len(l)==0):
+				print("No Items Supplied by you is having quantity less than 10.")
+				sleep(2)
+				clear()
+				continue
 			for i in l:
 				print()
-				print("Item Number- "+str(i[0]))
-				print("Item Name- "+str(i[1]))
-				print("Company- "+str(i[2]))
-				print("Price- "+str(i[3]))
-				print("Available Quantity- "+str(i[4]))
+				print("=> Item Number- "+str(i[0]))
+				print("=> Item Name- "+str(i[1]))
+				print("=> Company- "+str(i[2]))
+				print("=> Price- "+str(i[3]))
+				print("=> Available Quantity- "+str(i[4]))
+				print("---------------------------------------------")
+			print("Press Enter to Proceed")
+			input()
 		elif(s=='4'):
 			clear()
 			while(True):
-				item_id=input("Enter Item ID-")
+				item_id=input("Enter Item ID - ")
 				try:
 					item_id=int(item_id)
 					break
@@ -88,7 +115,7 @@ def view_items_supplied(uid):
 			l=fetchdetails(cursor)[0][0]
 			if(l==0):
 				print("Either there is no item with this ID or you haven't delivered this.")
-				s=input("Press 1 to try again or Press anything to exit- ")
+				s=input("Press 1 to try again or Press anything to exit.")
 				if(s=='1'):
 					continue
 				else:
@@ -113,6 +140,9 @@ def view_items_supplied(uid):
 				cursor=db.cursor()
 				cursor.execute(query)
 				db.commit()
+				print("Successfully Refilled.")
+				sleep(2)
+				clear()
 		elif(s=='5'):
 			add_new_item(uid)
 		elif(s=='6'):
@@ -122,9 +152,9 @@ def view_items_supplied(uid):
 			print("Please choose one of the options.")
 
 def enterSupplierMainScreen(uid):
-	print("-----------------------"+"Hello "+str(uid)+"--------------------------");
 	while(True):
 		clear()
+		print("-----------------------"+"Hello "+str(uid)+"--------------------------")
 		print("Choose one of the options-")
 		print("1. View Items Supplied")
 		print("2. Add New Items")
@@ -132,12 +162,16 @@ def enterSupplierMainScreen(uid):
 		print("4. Logout")
 		s=input("Enter your choice ==> ")
 		if(s=='1'):
+			clear()
 			view_items_supplied(uid)
 		elif(s=='2'):
+			clear()
 			add_new_item(uid)
 		elif(s=='3'):
+			clear()
 			viewProfile(uid)
 		elif(s=='4'):
+			clear()
 			if(logout(uid)):
 				break
 			else:
@@ -204,3 +238,6 @@ def add_new_item(uid):
 	cursor=db.cursor()
 	cursor.execute(query2,value2)
 	db.commit()
+	print("New Item Added Successfully.")
+	sleep(2)
+	clear()

@@ -1,6 +1,7 @@
 from global_db import *
 from payment import *
 from datetime import *
+from time import sleep
 
 def display_bill(OrderID,total_amount):
 	bill_id=fetch_id()
@@ -13,6 +14,7 @@ def display_bill(OrderID,total_amount):
 	query = "insert into bill_orders values ("+str(bill_id)+","+str(OrderID)+");"
 	cursor.execute(query)
 	db.commit()
+	return bill_id
 
 def display_cart(cartID):
 	print(" ____________________________________________________________________________")
@@ -49,23 +51,24 @@ def cart_option(uid):
 		tc=display_cart(cartid)
 		print("")
 		print("1. Order Now")
-		print("2. Add /Remove Items")
+		print("2. Add/Remove Items")
 		print("3. Exit")
-
 		option = input("Enter your choice ==> ")
 		if (option == '1'):
 			while(True):
 				clear()
-				print("")
+				print("---------------------PAYMENT GATEWAY---------------------")
 				print("1. Confirm Order.")
-				print("2. GO back")
-				option1 = input("Enter the choice")
+				print("2. Go back")
+				option1 = input("Enter the choice ==> ")
 				if (option1== '1'):
 					bool=make_payment(uid)
 					if(bool):
 						order_id = Place_order(cartid)
-						display_bill(order_id,tc)
-					break
+						print("=> Bill ID: "+str(display_bill(order_id,tc)))
+						sleep(1)
+						clear()
+					return
 				elif(option1=='2'):
 					break;
 				else:
@@ -75,7 +78,8 @@ def cart_option(uid):
 			# remove and add items
 			clear()
 			add_or_remove(cartid)
-			pass
+			if(not check_cart2(cartid)):
+				return
 		elif (option == '3'):
 			clear()
 			break
@@ -85,8 +89,6 @@ def cart_option(uid):
 
 def Place_order(cart_ID):
 #     order  id is to be fetched from a neew table so we have to change this part of hardcode
-
-
 	order_id=fetch_id()+1
 	cursor = db.cursor()
 	query = "Select I.Item_ID,c.Quantity,I.Price from item I , cart_item c where I.Item_ID =c.Item_ID and c.Cart_ID = "+str(cart_ID)+";"
@@ -115,7 +117,7 @@ def Place_order(cart_ID):
 		if(len(l2)==0):
 			#we need to insert a row
 			query="Insert into prediction values (%s,%s,%s);"
-			vales=[datetime.date(date.today()),int(i[0]),int(i[1])]
+			vales=(date.today(),int(i[0]),int(i[1]))
 			cursor.execute(query,vales)
 			db.commit()
 		else:
@@ -148,6 +150,11 @@ def add_or_remove(cart_id):
 	cursor=db.cursor()
 	while(True):
 		clear()
+		if(not check_cart2(cart_id)):
+			print("No more Items in your cart.")
+			sleep(1)
+			clear()
+			return
 		display_cart(cart_id)
 		print("")
 		print("1. Add item quantity.")

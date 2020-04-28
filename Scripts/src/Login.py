@@ -1,4 +1,5 @@
 from global_db import *
+from time import sleep
 
 def check_id_pass(id,password):
 	query="Select count(id) from ID_Pass where id="+str(id)+" and password='"+str(password)+"';"
@@ -29,6 +30,8 @@ def loginCustomerWithCreds(uid,password):
 	else:
 		print("")
 		print("Login Failed")
+		sleep(1)
+		clear()
 
 def customerLogin():
 	while(True):
@@ -70,6 +73,8 @@ def loginSupplierWithCreds(uid,password):
 	else:
 		print("")
 		print("Login Failed")
+		sleep(1)
+		clear()
 
 def supplierLogin():
 	while(True):
@@ -110,6 +115,8 @@ def loginEmployeeWithCreds(uid,password):
 	else:
 		print("")
 		print("Login Failed")
+		sleep(1)
+		clear()
 
 def employeeLogin():
 	while(True):
@@ -150,6 +157,8 @@ def loginManagerWithCreds(uid,password):
 	else:
 		print("")
 		print("Login Failed")
+		sleep(1)
+		clear()
 
 def managerLogin():
 	while(True):
@@ -190,6 +199,8 @@ def loginOwnerWithCreds(uid,password):
 	else:
 		print("")
 		print("Login Failed")
+		sleep(1)
+		clear()
 
 def ownerLogin():
 	while(True):

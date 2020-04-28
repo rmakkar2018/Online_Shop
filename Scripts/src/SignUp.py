@@ -1,6 +1,8 @@
 from global_db import *
+from time import sleep
 
 def dbCustomerReg(name,email,mobile,address,credit_card,password,confPassword):
+	print()
 	if(len(name) == 0):
 		print("Enter a valid name")
 		return 0
@@ -60,11 +62,16 @@ def customerRegistration():
 	if(dbCustomerReg(name,email,mobile,address,credit_card,password,confPassWord) == 1):
 		print("")
 		print("Customer Registered SuccessFully")
+		sleep(1)
+		clear()
 	else:
 		print("")
 		print("Customer Registration Failed")
+		sleep(1)
+		clear()
 
 def dbSupplierReg(name,email,mobile,address,gst,password,confPassword):
+	print()
 	if(len(name) == 0):
 		print("Enter a valid name")
 		return 0
@@ -119,15 +126,19 @@ def supplierRegistration():
 	if(dbSupplierReg(name,email,mobile,address,gst,password,confPassword) == 1):
 		print("")
 		print("Supplier Registered SuccessFully")
+		sleep(1)
+		clear()
 	else:
 		print("")
 		print("Supplier Registration Failed")
+		sleep(1)
+		clear()
 
 def signUpOptions():
 	clear()
 	print("")
-	print("------------Welcome to Registration Portal--------------")
 	while(True):
+		print("------------Welcome to Registration Portal--------------")
 		print("")
 		print("Choose Role")
 		print("1. Customer")
