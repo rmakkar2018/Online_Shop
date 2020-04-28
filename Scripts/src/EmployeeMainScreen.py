@@ -232,6 +232,7 @@ def specificCustomerDetail(x):
 		for i in orders:
 			print("Order_ID-"+str(i))
 			show_Orders(i)
+			fetchbill(i)
 
 def viewCustomers():
 	clear()

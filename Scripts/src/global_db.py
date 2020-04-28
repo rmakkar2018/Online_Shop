@@ -68,3 +68,23 @@ def check_valid(id,role):
 			return False
 		else:
 			return True
+
+def fetchoffer(item_id):
+	query="select Percentage from Offer where Offer_ID in (select Offer_ID from Offer_Item where Item_ID="+str(item_id)+");"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)
+	if(len(l)==0):
+		return 0
+	else:
+		return l[0][0]
+
+def fetchbill(order_id):
+	query="select Bill_ID,Created_Time,Created_Date,Total from Bill where Bill_ID in (select Bill_ID from Bill_Orders where Order_ID="+str(order_id)+");"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)
+	for i in l:
+		print("Date and Time- "+str(i[2])+" "+str(i[1]))
+		print("Total Amount- "+str(i[3]))
+		

@@ -16,24 +16,27 @@ def display_bill(OrderID,total_amount):
 
 def display_cart(cartID):
 	print(" ____________________________________________________________________________")
-	print('|%6s|%28s|%10s|%12s|%16s|' % ("S.No", "Name", "Quantity", "cost", "Net Cost"))
+	print('|%6s|%28s|%10s|%12s|%16s|' % ("S.No", "Name", "Quantity", "Cost", "Net Cost"))
 	print("----------------------------------------------------------------------------")
 
 	#print("| S.No |            Name            | Quantity |    cost    |    Net Cost    |")
 	l=list_items_in_cart(cartID)
 	Sno = 1
 	total_cost=0
+	total_dis=0
 	for i in l:
 		totalc=float(i[1])*float(i[2])
+		perc=fetchoffer(i[3])
+		total_dis+=totalc*(perc/100)
 		print('|%6d|%28s|%10d|%10.2f|%14.2f|'%(Sno,str(i[0]),int(i[1]),float(i[2]),totalc))
 		# print("| "+Sno+" |  "+str(i[0])+"  | "+str(i[1])+" | "+str(i[2])+" |"+totalc)
 		print("____________________________________________________________________________")
 		Sno=Sno+1
 		total_cost = total_cost +totalc
 	print("|----------------------Total Amount without discount : '%14.2f'------|" %total_cost)
+	print("|-------------------------Total Amount with discount : '%14.2f'------|" %(total_cost-total_dis))
 	print("----------------------------------------------------------------------------")
-
-	return total_cost
+	return total_cost-total_dis
 
 def cart_option(uid):
 	cursor=db.cursor();
@@ -252,7 +255,6 @@ def add_or_remove(cart_id):
 			continue
 		print("Press Enter to continue.")
 		garbage=input()
-
 
 def get_quantity(item_id):
 	query = "select Available_Quantity from Item where Item_ID=" + str(item_id) + ";"

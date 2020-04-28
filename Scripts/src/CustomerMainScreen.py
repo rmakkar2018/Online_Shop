@@ -24,7 +24,6 @@ def searchItem(uid):
 			query="Select Item_ID,Name,Company_Name,Price,Available_Quantity from Item where Name like '%"+item_name+"%';"
 			cursor.execute(query)
 			l=fetchdetails(cursor)
-			print(type(l))
 			print("Following are Items matching with your search-")
 			for i in l:
 				print()
@@ -33,6 +32,9 @@ def searchItem(uid):
 				print("Company- "+str(i[2]))
 				print("Price- "+str(i[3]))
 				print("Available Quantity- "+str(i[4]))
+				percentage=fetchoffer(i[0])
+				if(percentage>0):
+					print("Discount: "+str(percentage)+"%")
 			print()
 			print("Now enter item number of the items you want to add to your cart along with Quantity")
 			print("Enter numbers space seperated like if you want to buy 3 units of item 1")
@@ -200,6 +202,7 @@ def viewPreviousOrder(uid):
 	for i in orders:
 		print("Order_ID-"+str(i))
 		show_Orders(i)
+		fetchbill(i)
 	while(True):
 		print("Choose one of the options-")
 		print("1.Repeat previous order.")
@@ -247,6 +250,9 @@ def show_items(item_id):
 		print("Company- "+str(i[2]))
 		print("Price- "+str(i[3]))
 		print("Available Quantity- "+str(i[4]))
+		percentage=fetchoffer(i[0])
+		if(percentage>0):
+			print("Discount: "+str(percentage)+"%")
 	print()
 	return
 
@@ -288,7 +294,6 @@ def customerSupport(uid):
 			print('Press Enter to return.')
 			garbage=input()
 			break
-
 		elif(s=='3'):
 			print("Register a complain. Apologies for inconvenience caused.")
 			print("Kindly enter all your complain and then press Enter")
@@ -309,11 +314,9 @@ def customerSupport(uid):
 			print('Press Enter to return.')
 			garbage=input()
 			break
-		
 		elif(s=='4'):
 			clear()
 			break
-		
 		else:
 			clear()
 			print("Please choose one of the options.")
