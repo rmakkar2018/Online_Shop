@@ -15,6 +15,13 @@ def clear():
 	else: 
 		_ = system('clear')
 
+def isInt(string):
+	a_low = string.lower()
+	if(a_low.islower()):
+		return 0
+	else:
+		return 1	
+		
 def check(email):
 	regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
 	if(re.search(regex,email)):
