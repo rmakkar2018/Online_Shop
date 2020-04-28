@@ -1,6 +1,7 @@
 from global_db import *
 from datetime import date
 from time import sleep
+from sales_prediction import predict_sales_for_item
 
 def fetch_Customers():
 	query="Select Customer_ID,Name from Customer;"
@@ -284,7 +285,8 @@ def enterManagerMainScreen(uid):
 		print("4. Register Employee")
 		print("5. View Profile")
 		print("6. Add Offer on Items")
-		print("7. Log Out")
+		print("7. Predicted Sales by Item ID")
+		print("8. Log Out")
 		print('')
 		option = input("Enter your choice ==> ")
 		if(option =='1'):
@@ -305,6 +307,27 @@ def enterManagerMainScreen(uid):
 				print("Invalid Item ID.")
 				sleep(2)
 		elif(option == '7'):
+			try:
+				item_id=int(input("Enter Item ID - "))
+				month=int(input("Enter Month - "))
+				year=int(input("Enter Year - "))
+				yyy=date.today().year
+				if(1<=month<=12 and year>=yyy):
+					pred=predict_sales_for_item(month,year,item_id)
+					print()
+					print("Predicted Value of sales is "+str(pred))
+					print('')
+					print('Press ENTER to proceed.')
+					g=input()
+				else:
+					print("Enter valid details.")
+					sleep(2)
+					continue	
+			except:
+				print("Enter valid details.")
+				sleep(2)
+				continue
+		elif(option == '8'):
 			clear()
 			print("---------------------Login Portal---------------------")
 			break
