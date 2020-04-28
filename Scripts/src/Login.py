@@ -17,7 +17,7 @@ def customerDbQuery(uid,password):
 	if(len(password) == 0):
 		print("Enter a valid password")
 		return 0
-	return check_id_pass(uid,password)
+	return check_id_pass(uid,password) and check_valid(uid,"Customer")
 
 def loginCustomerWithCreds(uid,password):
 	from CustomerMainScreen import enterCustomerMainScreen
@@ -55,7 +55,7 @@ def supplierDbQuery(uid,password):
 	if(len(password) == 0):
 		print("Enter a valid password")
 		return 0
-	return check_id_pass(uid,password)
+	return check_id_pass(uid,password) and check_valid(uid,"Supplier")
 
 def loginSupplierWithCreds(uid,password):
 	from SupplierMainScreen import enterSupplierMainScreen
@@ -92,7 +92,7 @@ def employeeDbQuery(uid,password):
 	if(len(password) == 0):
 		print("Enter a valid password")
 		return 0
-	return check_id_pass(uid,password)
+	return check_id_pass(uid,password) and check_valid(uid,"Employee")
 
 def loginEmployeeWithCreds(uid,password):
 	from EmployeeMainScreen import enterEmployeeMainScreen
@@ -129,7 +129,7 @@ def managerDbQuery(uid,password):
 	if(len(password) == 0):
 		print("Enter a valid password")
 		return 0
-	return check_id_pass(uid,password)
+	return check_id_pass(uid,password) and check_valid(uid,"Manager")
 
 def loginManagerWithCreds(uid,password):
 	from ManagerMainScreen import enterManagerMainScreen
@@ -166,7 +166,7 @@ def ownerDbQuery(uid,password):
 	if(len(password) == 0):
 		print("Enter a valid password")
 		return 0
-	return check_id_pass(uid,password)
+	return check_id_pass(uid,password) and check_valid(uid,"Owner")
 
 def loginOwnerWithCreds(uid,password):
 	from OwnerMainScreen import enterOwnerMainScreen 
