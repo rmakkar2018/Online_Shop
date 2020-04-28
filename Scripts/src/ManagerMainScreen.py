@@ -141,6 +141,33 @@ def viewEmployeeAttendance(uid):
 		print("Either Invalid Employee ID or this employee is not under you.")
 
 def dbEmployeeRegistration(uid,name,mobile,email,address,salary,password,confPassword):
+	if(len(name) == 0):
+		print("Enter a valid name")
+		return 0
+	if(len(email) == 0):
+		print("Enter a valid email id")
+		return 0
+	if(len(mobile) == 0):
+		print("Enter a valid mobile no.")
+		return 0
+	if(len(address) == 0):
+		print("Enter a valid address")
+		return 0
+	if(len(salary) == 0):
+		print("Enter a valid a Salary")
+		return 0
+	if(len(password)==0):
+		print("Enter a valid passowrd")
+		return 0
+	if(password!=confPassword):
+		print("Passwords do not match.")
+		return 0
+	if(check(email) == 0):
+		print("Enter a valid email")
+		return 0
+	if(isInt(mobile) == 0):
+		print("Enter a valid mobile no.")
+		return 0
 	id = fetch_id()+1
 	hire_date=date.today()
 	cursor=db.cursor()
@@ -160,6 +187,7 @@ def dbEmployeeRegistration(uid,name,mobile,email,address,salary,password,confPas
 	db.commit()
 
 	update_id(id-1,1)
+	print("Employee Id - " +str(id))
 	return 1
 
 def registerEmployee(uid):
@@ -175,7 +203,7 @@ def registerEmployee(uid):
 	confPassword = input("Confirm Password : ")
 	if(dbEmployeeRegistration(uid,name,mobile,email,address,salary,password,confPassword) == 1):
 		print("")
-		print("Employee successfully registerd")
+		print("Employee successfully registered")
 		print("")
 	else:
 		print("")

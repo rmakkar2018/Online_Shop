@@ -17,6 +17,9 @@ def customerDbQuery(uid,password):
 	if(len(password) == 0):
 		print("Enter a valid password")
 		return 0
+	if(isInt(uid) == 0):
+		print("Enter a valid customer Id")
+		return 0
 	return check_id_pass(uid,password) and check_valid(uid,"Customer")
 
 def loginCustomerWithCreds(uid,password):
@@ -55,6 +58,9 @@ def supplierDbQuery(uid,password):
 	if(len(password) == 0):
 		print("Enter a valid password")
 		return 0
+	if(isInt(uid) == 0):
+		print("Enter a valid Supplier Id")
+		return 0
 	return check_id_pass(uid,password) and check_valid(uid,"Supplier")
 
 def loginSupplierWithCreds(uid,password):
@@ -92,6 +98,9 @@ def employeeDbQuery(uid,password):
 	if(len(password) == 0):
 		print("Enter a valid password")
 		return 0
+	if(isInt(uid) == 0):
+		print("Enter a valid Employee Id")
+		return 0
 	return check_id_pass(uid,password) and check_valid(uid,"Employee")
 
 def loginEmployeeWithCreds(uid,password):
@@ -123,14 +132,15 @@ def employeeLogin():
 			print("Enter a valid option")
 
 def managerDbQuery(uid,password):
-	#print(uid,password)
 	if(len(uid) == 0):
 		print("Enter a valid Manager Id")
 		return False
 	if(len(password) == 0):
 		print("Enter a valid password")
 		return False
-	#print(check_id_pass(uid,password) and check_valid(uid,"Manager"))
+	if(isInt(uid) == 0):
+		print("Enter a valid Manager Id")
+		return False
 	return check_id_pass(uid,password) and check_valid(uid,"Manager")
 
 def loginManagerWithCreds(uid,password):
@@ -167,6 +177,9 @@ def ownerDbQuery(uid,password):
 		return 0
 	if(len(password) == 0):
 		print("Enter a valid password")
+		return 0
+	if(isInt(uid) == 0):
+		print("Enter a valid Owner Id")
 		return 0
 	return check_id_pass(uid,password) and check_valid(uid,"Owner")
 

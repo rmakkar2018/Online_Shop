@@ -22,6 +22,15 @@ def dbCustomerReg(name,email,mobile,address,credit_card,password,confPassword):
 	if(password!=confPassword):
 		print("Passwords do not match.")
 		return 0
+	if(isInt(mobile) == 0):
+		print("Enter a valid mobile number")
+		return 0
+	if(check(email) == 0):
+		print("Enter a valid email id")
+		return 0
+	if(isInt(credit_card) == 0):
+		print("Enter a valid credit card number")
+		return 0
 	id=fetch_id()+1
 	cart_id=fetch_id()+2
 	query="insert into Customer value (%s,%s,%s,%s,%s,%s,%s)"
@@ -30,18 +39,12 @@ def dbCustomerReg(name,email,mobile,address,credit_card,password,confPassword):
 	print("")
 	print("Registring Customer.........................")
 	try:
-
 		cursor.execute(query,value)
-
 		reg_ID_Pass(id,password)
-
 		update_id(id-1,2)
 		print("--------------------------------------------------")
 		print("ID Assigned- "+ str(id))
-		print("ID Assigned- " + str(id))
-		print("ID Assigned- " + str(id))
 	except:
-
 		return 0
 	return 1
 
@@ -82,6 +85,12 @@ def dbSupplierReg(name,email,mobile,address,gst,password,confPassword):
 		return 0
 	if(password != confPassword):
 		print("Passwords do not match.")
+		return 0
+	if(isInt(mobile) == 0):
+		print("Enter a valid mobile number")
+		return 0
+	if(check(email) == 0):
+		print("Enter a valid email id")
 		return 0
 	id=fetch_id()+1
 	query="insert into Supplier value (%s,%s,%s,%s,%s,%s)"
