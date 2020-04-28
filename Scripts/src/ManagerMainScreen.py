@@ -1,5 +1,6 @@
 from global_db import *
 from datetime import date
+from time import sleep
 
 def fetch_Customers():
 	query="Select Customer_ID,Name from Customer;"
@@ -34,21 +35,19 @@ def specificCustomerDetail(x):
 	cursor=db.cursor()
 	cursor.execute(query)
 	l=fetchdetails(cursor)
-	print("ID- "+str(l[0][0]))
-	print("Name- "+str(l[0][1]))
-	print("Mobile- "+str(l[0][2]))
-	print("Address- "+str(l[0][3]))
-	print("Email- "+str(l[0][4]))
-	print("Card No- "+str(l[0][5]))
+	print("=> ID- "+str(l[0][0]))
+	print("=> Name- "+str(l[0][1]))
+	print("=> Mobile- "+str(l[0][2]))
+	print("=> Address- "+str(l[0][3]))
+	print("=> Email- "+str(l[0][4]))
+	print("=> Card No- "+str(l[0][5]))
 	query="select count(Order_ID) from cart_order where Cart_ID in (select Cart_Id from customer where Customer_ID="+str(x)+") order by Order_ID desc;"
 	cursor=db.cursor()
 	cursor.execute(query)
 	l=fetchdetails(cursor)[0][0]
-	print("Total Orders- "+str(l))
-	print("Following are the Orders placed by Customer-")
-	if(l==0):
-		print("No Orders to show.")
-	else:
+	print("=> Total Orders- "+str(l))
+	if(l!=0):
+		print("Following are the Orders placed by Customer-")
 		query="select Order_ID from cart_order where Cart_ID in (select Cart_Id from customer where Customer_ID="+str(x)+") order by Order_ID desc;"
 		cursor=db.cursor()
 		cursor.execute(query)
@@ -57,25 +56,35 @@ def specificCustomerDetail(x):
 		for i in l:
 			orders.append(i[0])
 		for i in orders:
-			print("Order_ID-"+str(i))
+			print("Order_ID- "+str(i))
 			show_Orders(i)
 			fetchbill(i)
+	print('')
+	print("Press ENTER to proceed.")
+	g=input()
+	clear()
 
 def viewCustomers():
-	clear()
 	customers=fetch_Customers()
-	print("----------------------------Customers-----------------------------------")
 	while(True):
+		clear()
+		print("----------------------------Customers-----------------------------------")
 		print("1. View All Customers.")
 		print("2. Search by Customer ID")
 		print("3. Exit" )
-		s=input("Enter your choice- ")
+		print('')
+		s=input("Enter your choice ==> ")
 		if(s=='1'):
+			if(len(customers)==0):
+				print('')
+				print("No Customers to Show.")
 			for i in customers:
 				print("ID- "+str(i[0])+"\tName- "+str(i[1]))
+			print()
+			print("Press ENTER to proceed")
+			g=input()
 		elif(s=='2'):
 			x=input("Enter Customer ID - ")
-			x=int(x)
 			f=False
 			try:
 				for i in customers:
@@ -84,15 +93,18 @@ def viewCustomers():
 						break
 				if(not f):
 					print("No Such Customer.")
+					sleep(2)
 				else:
-					specificCustomerDetail(x)
+					specificCustomerDetail(int(x))
 			except:
 				print("Invalid Customer ID")
+				sleep(2)
 		elif(s=='3'):
 			clear()
 			break
 		else:
 			print("Invalid Input. Please try again.")
+			sleep(2)
 
 def viewEmployees(uid):
 	clear()
@@ -101,15 +113,23 @@ def viewEmployees(uid):
 	cursor=db.cursor()
 	cursor.execute(query)
 	l=fetchdetails(cursor)
+	if(len(l)==0):
+		print('')
+		print("No Employees under you.")
 	for i in l:
-		print("Employee_ID- "+str(i[0]))
-		print("Name- "+str(i[1]))
-		print("Mobile No- "+str(i[2]))
-		print("Email- "+str(i[3]))
-		print("Address- "+str(i[5]))
-		print("Salary- "+str(i[4]))
-		print("Hire Date- "+str(i[6]))
-		print()
+		print("=> Employee_ID- "+str(i[0]))
+		print("=> Name- "+str(i[1]))
+		print("=> Mobile No- "+str(i[2]))
+		print("=> Email- "+str(i[3]))
+		print("=> Address- "+str(i[5]))
+		print("=> Salary- "+str(i[4]))
+		print("=> Hire Date- "+str(i[6]))
+		print('')
+		print("--------------------------------------------------------------------------")
+	print('')
+	print("Press ENTER to proceed.")
+	g=input()
+	clear()
 
 def viewEmployeeAttendance(uid):
 	clear()
@@ -119,6 +139,8 @@ def viewEmployeeAttendance(uid):
 		empid=int(empid)
 	except:
 		print("Invalid Employee ID. Please try again.")
+		sleep(2)
+		clear()
 		return 
 	query="select Employee_ID from Employee where Employee_ID in (select Employee_ID from employee_manager where Manager_ID="+str(uid)+");"
 	cursor=db.cursor()
@@ -135,25 +157,41 @@ def viewEmployeeAttendance(uid):
 		cursor=db.cursor()
 		cursor.execute(query)
 		atten=fetchdetails(cursor)
+		if(len(atten)==0):
+			print("No recorded Attendance for this Employee.")
+			sleep(2)
+			clear()
+			return
 		for i in atten:
 			print(i[0])
+		print('')
+		sleep(2)
+		clear()
+		return
 	else:
 		print("Either Invalid Employee ID or this employee is not under you.")
+		sleep(2)
+		clear()
+		return
+	print('')
+	print("Press ENTER to proceed.")
+	g=input()
 
 def dbEmployeeRegistration(uid,name,mobile,email,address,salary,password,confPassword):
+	print('')
 	if(len(name) == 0):
 		print("Enter a valid name")
 		return 0
 	if(len(email) == 0):
 		print("Enter a valid email id")
 		return 0
-	if(len(mobile) == 0):
+	if(len(mobile) == 0 and len(mobile)>10):
 		print("Enter a valid mobile no.")
 		return 0
 	if(len(address) == 0):
 		print("Enter a valid address")
 		return 0
-	if(len(salary) == 0):
+	if(len(salary) == 0 and isInt(salary)==0):
 		print("Enter a valid a Salary")
 		return 0
 	if(len(password)==0):
@@ -187,7 +225,7 @@ def dbEmployeeRegistration(uid,name,mobile,email,address,salary,password,confPas
 	db.commit()
 
 	update_id(id-1,1)
-	print("Employee Id - " +str(id))
+	print("\nEmployee Id - " +str(id))
 	return 1
 
 def registerEmployee(uid):
@@ -205,10 +243,14 @@ def registerEmployee(uid):
 		print("")
 		print("Employee successfully registered")
 		print("")
+		sleep(2)
+		clear()
 	else:
 		print("")
-		print("Employee rgistration failed")
+		print("Employee registration failed")
 		print("")
+		sleep(2)
+		clear()
 
 def viewProfile(uid):
 	clear()
@@ -218,14 +260,19 @@ def viewProfile(uid):
 	cursor.execute(query)
 	l=fetchdetails(cursor)
 	for i in l:
-		print("Manager ID- "+str(i[0]))
-		print("Name- "+str(i[1]))
-		print("Department- "+str(i[3]))
-		print("Mobile- "+str(i[7]))
-		print("Email- "+str(i[4]))
-		print("Address- "+str(i[5]))
-		print("Salary- "+str(i[2]))
-		print("Hire Date- "+str(i[6]))
+		print("")
+		print("=> Manager ID- "+str(i[0]))
+		print("=> Name- "+str(i[1]))
+		print("=> Department- "+str(i[3]))
+		print("=> Mobile- "+str(i[7]))
+		print("=> Email- "+str(i[4]))
+		print("=> Address- "+str(i[5]))
+		print("=> Salary- "+str(i[2]))
+		print("=> Hire Date- "+str(i[6]))
+	print()
+	print("Press ENTER to proceed.")
+	g=input()
+	clear()
 
 def enterManagerMainScreen(uid):
 	clear()
@@ -237,6 +284,7 @@ def enterManagerMainScreen(uid):
 		print("4. Register Employee")
 		print("5. View Profile")
 		print("6. Log Out")
+		print('')
 		option = input("Enter your choice ==> ")
 		if(option =='1'):
 			viewCustomers()
@@ -254,3 +302,50 @@ def enterManagerMainScreen(uid):
 			break
 		else:
 			print("Enter a valid option")
+
+def add_offer(item_id):
+	query="select count(*) from Item where Item_ID="+str(item_id)+";"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)[0][0]
+	if(l==0):
+		print("Invalid Item_ID.")
+		sleep(2)
+		clear()
+		return
+	else:
+		query="select count(*) from Offer_Item where Item_ID="+str(item_id)+";"
+		cursor=db.cursor()
+		cursor.execute(query)
+		l1=fetchdetails(cursor)[0][0]
+		if(l1!=0):
+			print("There's an existing offer on this item.")
+			sleep(2)
+			clear()
+			return
+		try:
+			perc=int(input("Enter Percentage Off on this Item - "))
+			if(perc<=0 or perc>100):
+				print("Invalid Percentage.")
+				sleep(2)
+				clear()
+				return	
+		except:
+			print("Invalid Percentage.")
+			sleep(2)
+			clear()
+			return
+		offer_id=fetch_id()
+		query="insert into Offer value (%s,%s)"
+		value=(offer_id,perc)
+		cursor=db.cursor()
+		cursor.execute(query,value)
+		db.commit()
+		query="insert into Offer_Item value (%s,%s)"
+		value=(offer_id,item_id)
+		cursor=db.cursor()
+		cursor.execute(query,value)
+		db.commit()
+		print("\nOffer Added successfully.")
+		sleep(2)
+		clear()

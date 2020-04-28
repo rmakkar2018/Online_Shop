@@ -5,9 +5,12 @@ import re
 db = sql.connect(
 	host="localhost",
 	user = "root",
-	passwd = "1111",
+	passwd = "himraj18",
 	database = "project67"
 )
+
+def ret_mobile(s):
+	return s[:10]
 
 def clear(): 
 	if name == 'nt': 

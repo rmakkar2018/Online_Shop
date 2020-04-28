@@ -57,8 +57,8 @@ def Register_manager():
 		return
 	address=input("Enter Address: ")
 	try:
-		mobile=float(input("Enter Mobile No. : "))
-		if(mobile<=0 and len(str(mobile))> 10):
+		mobile=int(input("Enter Mobile No. : "))
+		if(mobile<=0 and len(str(mobile))>10):
 			print("Please enter a valid value.")
 			print("Registration failed.")
 			sleep(2)
@@ -96,6 +96,7 @@ def Register_manager():
 		clear()
 		return
 	update_id(id-1,1)
+	print()
 	print("The Manager has been registered.")
 	print("Manager ID- "+str(id))
 	print()
@@ -141,46 +142,66 @@ def View_manager():
 				ManagerID=int(ManagerID)
 			except:
 				print("Enter a valid ID. Try Again.")
-				continue
 			query="select * from Manager where Manager_ID="+str(ManagerID)+";"
 			cursor=db.cursor()
 			cursor.execute(query)
 			data=fetchdetails(cursor)
 			if(len(data)==0):
 				print("No Manager with this ID.")
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
+				continue
 			else:
 				for i in data:
 					print()
-					print("Manager ID- "+str(i[0]))
-					print("Name- "+str(i[1]))
-					print("Department- "+str(i[3]))
-					print("Mobile- "+str(i[7]))
-					print("Email- "+str(i[4]))
-					print("Address- "+str(i[5]))
-					print("Salary- "+str(i[2]))
-					print("Hire Date- "+str(i[6]))
+					print("=> Manager ID- "+str(i[0]))
+					print("=> Name- "+str(i[1]))
+					print("=> Department- "+str(i[3]))
+					print("=> Mobile- "+str(i[7]))
+					print("=> Email- "+str(i[4]))
+					print("=> Address- "+str(i[5]))
+					print("=> Salary- "+str(i[2]))
+					print("=> Hire Date- "+str(i[6]))
+					print()
 					print("---------------------------------------------------------------------------")
 				print()
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
 		elif option == '2':
 			ManagerName = input("Enter Manager Name or Press Enter to view all: ")
 			query="select * from Manager where Name like '%"+ManagerName+"%';"
 			cursor=db.cursor()
 			cursor.execute(query)
 			data=fetchdetails(cursor)
-			if(len(data)==0):
+			if(ManagerName=='' and len(data)==0):
+				print("No Manager Registered yet.")
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
+			elif(len(data)==0):
 				print("No Manager with this Name.")
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
 			else:
 				for i in data:
 					print()
-					print("Manager ID- "+str(i[0]))
-					print("Name- "+str(i[1]))
-					print("Department- "+str(i[3]))
-					print("Mobile- "+str(i[7]))
-					print("Email- "+str(i[4]))
-					print("Address- "+str(i[5]))
-					print("Salary- "+str(i[2]))
-					print("Hire Date- "+str(i[6]))
+					print("=> Manager ID- "+str(i[0]))
+					print("=> Name- "+str(i[1]))
+					print("=> Department- "+str(i[3]))
+					print("=> Mobile- "+str(i[7]))
+					print("=> Email- "+str(i[4]))
+					print("=> Address- "+str(i[5]))
+					print("=> Salary- "+str(i[2]))
+					print("=> Hire Date- "+str(i[6]))
+					print()
+					print("---------------------------------------------------------------------------")
 				print()
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
 		elif option == '3':
 			clear()
 			break
@@ -208,36 +229,57 @@ def View_employee():
 			data=fetchdetails(cursor)
 			if(len(data)==0):
 				print("No Employee with this ID.")
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
 			else:
 				for i in data:
 					print()
-					print("Employee ID- "+str(i[0]))
-					print("Name- "+str(i[1]))
-					print("Mobile- "+str(i[2]))
-					print("Email- "+str(i[3]))
-					print("Address- "+str(i[5]))
-					print("Salary- "+str(i[4]))
-					print("Hire Date- "+str(i[6]))
+					print("=> Employee ID- "+str(i[0]))
+					print("=> Name- "+str(i[1]))
+					print("=> Mobile- "+str(i[2]))
+					print("=> Email- "+str(i[3]))
+					print("=> Address- "+str(i[5]))
+					print("=> Salary- "+str(i[4]))
+					print("=> Hire Date- "+str(i[6]))
+					print()
+					print("---------------------------------------------------------------------------")
 				print()
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
 		elif option == '2':
 			EmployeeName = input("Enter Employee Name or Press Enter to view all: ")
 			query="select * from Employee where Name like '%"+EmployeeName+"%';"
 			cursor=db.cursor()
 			cursor.execute(query)
 			data=fetchdetails(cursor)
-			if(len(data)==0):
+			if(len(data)==0 and EmployeeName==''):
+				print("No Employee Registered yet.")
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
+			elif(len(data)==0):
 				print("No Employee with this Name.")
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
 			else:
 				for i in data:
 					print()
-					print("Employee ID- "+str(i[0]))
-					print("Name- "+str(i[1]))
-					print("Mobile- "+str(i[2]))
-					print("Email- "+str(i[3]))
-					print("Address- "+str(i[5]))
-					print("Salary- "+str(i[4]))
-					print("Hire Date- "+str(i[6]))
+					print("=> Employee ID- "+str(i[0]))
+					print("=> Name- "+str(i[1]))
+					print("=> Mobile- "+str(i[2]))
+					print("=> Email- "+str(i[3]))
+					print("=> Address- "+str(i[5]))
+					print("=> Salary- "+str(i[4]))
+					print("=> Hire Date- "+str(i[6]))
+					print()
+					print("---------------------------------------------------------------------------")
 				print()
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
 		elif option == '3':
 			clear()
 			break
@@ -265,34 +307,55 @@ def View_supplier():
 			data=fetchdetails(cursor)
 			if(len(data)==0):
 				print("No Supplier with this ID.")
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
 			else:
 				for i in data:
 					print()
-					print("Supplier ID: "+str(i[0]))
-					print("Name: "+str(i[1]))
-					print("Mobile No: "+str(i[2]))
-					print("Email-ID: "+str(i[3]))
-					print("Address: "+str(i[4]))
-					print("GST No.: "+str(i[5]))
+					print("=> Supplier ID: "+str(i[0]))
+					print("=> Name: "+str(i[1]))
+					print("=> Mobile No: "+str(i[2]))
+					print("=> Email-ID: "+str(i[3]))
+					print("=> Address: "+str(i[4]))
+					print("=> GST No.: "+str(i[5]))
+					print()
+					print("---------------------------------------------------------------------------")
 				print()
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
 		elif option == '2':
 			SupplierName = input("Enter Supplier Name or Press Enter for all Supplier: ")
 			query="select * from Supplier where Name like '%"+SupplierName+"%';"
 			cursor=db.cursor()
 			cursor.execute(query)
 			data=fetchdetails(cursor)
-			if(len(data)==0):
+			if(len(data)==0 and SupplierName==''):
+				print("No Supplier registered yet.")
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
+			elif(len(data)==0):
 				print("No Supplier with this Name.")
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
 			else:
 				for i in data:
 					print()
-					print("Supplier ID: "+str(i[0]))
-					print("Name: "+str(i[1]))
-					print("Mobile No: "+str(i[2]))
-					print("Email-ID: "+str(i[3]))
-					print("Address: "+str(i[4]))
-					print("GST No.: "+str(i[5]))
+					print("=> Supplier ID: "+str(i[0]))
+					print("=> Name: "+str(i[1]))
+					print("=> Mobile No: "+str(i[2]))
+					print("=> Email-ID: "+str(i[3]))
+					print("=> Address: "+str(i[4]))
+					print("=> GST No.: "+str(i[5]))
+					print()
+					print("---------------------------------------------------------------------------")
 				print()
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
 		elif option == '3':
 			clear()
 			break
@@ -320,34 +383,55 @@ def View_customer():
 			data=fetchdetails(cursor)
 			if(len(data)==0):
 				print("No Customer with this ID.")
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
 			else:
 				for i in data:
 					print()
-					print("Customer ID: "+str(i[0]))
-					print("Name: "+str(i[1]))
-					print("Mobile No: "+str(i[2]))
-					print("Address: "+str(i[3]))
-					print("Email-ID: "+str(i[4]))
-					print("Credit Card: "+str(i[5]))
+					print("=> Customer ID: "+str(i[0]))
+					print("=> Name: "+str(i[1]))
+					print("=> Mobile No: "+str(i[2]))
+					print("=> Address: "+str(i[3]))
+					print("=> Email-ID: "+str(i[4]))
+					print("=> Credit Card: "+str(i[5]))
+					print()
+					print("---------------------------------------------------------------------------")
 				print()
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
 		elif option == '2':
 			CustomerName = input("Enter Customer Name or Press Enter for all Customers: ")
 			query="select * from Customer where Name like '%"+CustomerName+"%';"
 			cursor=db.cursor()
 			cursor.execute(query)
 			data=fetchdetails(cursor)
-			if(len(data)==0):
+			if(len(data)==0 and CustomerName==''):
+				print("No Customer Registered yet.")
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
+			elif(len(data)==0):
 				print("No Customer with this Name.")
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
 			else:
 				for i in data:
 					print()
-					print("Customer ID: "+str(i[0]))
-					print("Name: "+str(i[1]))
-					print("Mobile No: "+str(i[2]))
-					print("Address: "+str(i[3]))
-					print("Email-ID: "+str(i[4]))
-					print("Credit Card: "+str(i[5]))
+					print("=> Customer ID: "+str(i[0]))
+					print("=> Name: "+str(i[1]))
+					print("=> Mobile No: "+str(i[2]))
+					print("=> Address: "+str(i[3]))
+					print("=> Email-ID: "+str(i[4]))
+					print("=> Credit Card: "+str(i[5]))
+					print()
+					print("---------------------------------------------------------------------------")
 				print()
+				print("Press ENTER to Proceed.")
+				garbage=input()
+				clear()
 		elif option == '3':
 			clear()
 			break
@@ -355,4 +439,48 @@ def View_customer():
 			print("Enter a valid choice. Try Again")
 
 def show_stats():
-	pass
+	clear()
+	query="select count(*) from Manager;"
+	cursor=db.cursor()
+	cursor.execute(query)
+	manager=fetchdetails(cursor)[0][0]
+
+	query="select count(*) from Employee;"
+	cursor=db.cursor()
+	cursor.execute(query)
+	employee=fetchdetails(cursor)[0][0]
+
+	query="select count(*) from Supplier;"
+	cursor=db.cursor()
+	cursor.execute(query)
+	supplier=fetchdetails(cursor)[0][0]
+
+	query="select count(*) from Customer;"
+	cursor=db.cursor()
+	cursor.execute(query)
+	customer=fetchdetails(cursor)[0][0]
+
+	query="select count(Bill_ID) from Bill;"
+	cursor=db.cursor()
+	cursor.execute(query)
+	bills=fetchdetails(cursor)[0][0]
+
+	query="select sum(Total) from Bill;"
+	cursor=db.cursor()
+	cursor.execute(query)
+	earn=fetchdetails(cursor)[0][0]
+
+	if(earn==None):
+		earn=0
+
+	print("------------------------- STATISTICS OF SHOP -------------------------")
+	print("=> Total Managers- "+str(manager))
+	print("=> Total Employee- "+str(employee))
+	print("=> Total Supplier- "+str(supplier))
+	print("=> Total Customer- "+str(customer))
+	print("=> Total Orders- "+str(bills))
+	print("=> Total Earnings- "+str(earn))
+	print()
+	print("Press ENTER to proceed.")
+	garbage=input()
+	clear()
