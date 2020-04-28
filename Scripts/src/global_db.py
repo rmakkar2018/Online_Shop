@@ -62,7 +62,7 @@ def check_valid(id,role):
 	else:	
 		query="select "+str(role)+"_ID from "+str(role)+" where "+str(role)+"_ID="+str(id)+";"
 		cursor=db.cursor()
-		cursor.execute()
+		cursor.execute(query)
 		l=fetchdetails(cursor)
 		if(len(l)==0):
 			return False

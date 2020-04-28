@@ -123,18 +123,20 @@ def employeeLogin():
 			print("Enter a valid option")
 
 def managerDbQuery(uid,password):
+	#print(uid,password)
 	if(len(uid) == 0):
 		print("Enter a valid Manager Id")
-		return 0
+		return False
 	if(len(password) == 0):
 		print("Enter a valid password")
-		return 0
+		return False
+	#print(check_id_pass(uid,password) and check_valid(uid,"Manager"))
 	return check_id_pass(uid,password) and check_valid(uid,"Manager")
 
 def loginManagerWithCreds(uid,password):
 	from ManagerMainScreen import enterManagerMainScreen
-	if(employeeDbQuery(uid,password) == 1):
-		enterManagerMainScreen(uid);
+	if(managerDbQuery(uid,password)):
+		enterManagerMainScreen(uid)
 	else:
 		print("")
 		print("Login Failed")
@@ -150,7 +152,7 @@ def managerLogin():
 		print("2. Exit")
 		option = input("Enter your choice ==> ")
 		if(option == '1'):
-			loginManagerWithCreds(uid,password);
+			loginManagerWithCreds(uid,password)
 		elif(option == '2'):
 			print("Exiting from Login Portal")
 			clear()

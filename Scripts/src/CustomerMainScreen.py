@@ -1,5 +1,6 @@
 from global_db import *
 from cart import *
+
 def searchItem(uid):
 	items=[]
 	quantity=[]
@@ -279,7 +280,7 @@ def customerSupport(uid):
 			details=fetchdetails(cursor)
 			#print(details)
 			
-			query="insert into help_feedback values (%s,%s,%s,%s,%s);"
+			query="insert into help_feedback values (%s,%s,%s,%s,%s,%s);"
 			values=(cmpid,uid,details[0][0],details[0][1],feedback,False)
 			cursor.execute(query,values)
 			db.commit()
@@ -300,7 +301,7 @@ def customerSupport(uid):
 			details=fetchdetails(cursor)
 			#print(details)
 			
-			query="insert into help_feedback values (%s,%s,%s,%s,%s);"
+			query="insert into help_feedback values (%s,%s,%s,%s,%s,%s);"
 			values=(cmpid,uid,details[0][0],details[0][1],feedback,False)
 			cursor.execute(query,values)
 			db.commit()

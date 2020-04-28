@@ -110,6 +110,9 @@ def view_items_supplied(uid):
 						print("Please Enter a valid Quantity.")
 						continue
 				query="update Item set Available_Quantity="+str(av+q)+" where Item_ID="+str(item_id)+";"
+				cursor=db.cursor()
+				cursor.execute(query)
+				db.commit()
 		elif(s=='5'):
 			add_new_item(uid)
 		elif(s=='6'):
@@ -199,5 +202,5 @@ def add_new_item(uid):
 	query2="insert into supplier_item value (%s,%s);"
 	value2=(uid,item_id)
 	cursor=db.cursor()
-	cursor.execute(query1,value1)
+	cursor.execute(query2,value2)
 	db.commit()
