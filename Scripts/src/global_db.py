@@ -1,5 +1,6 @@
 import mysql.connector as sql
 from os import system,name
+import re
 
 db = sql.connect(
 	host="localhost",
@@ -14,6 +15,12 @@ def clear():
 	else: 
 		_ = system('clear')
 
+def check(email):
+	regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+	if(re.search(regex,email)):
+		return 1
+	else:
+		return 0
 def fetchdetails(cursor):
 	l=[]
 	for i in cursor:
