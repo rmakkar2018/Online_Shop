@@ -119,14 +119,32 @@ def Place_order(cart_ID):
 
     return order_id
 
+def check_quantity(item_id,quantity):
+	query="select Available_Quantity from Item where Item_ID="+str(item_id)+";"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)
+	q=l[0][0]
+	if(q<quantity):
+		return False
+	else:
+		av=q-quantity
+		query="update Item set Available_Quantity="+str(av)+" where Item_ID="+str(item_id)+";"
+		cursor.execute(query)
+		db.commit()
+		return True
+
 def add_or_remove(cart_id):
+    cursor=db.cursor()
     while(True):
         clear()
         display_cart(cart_id)
         print("")
         print("1. Add item quantity.")
         print("2. Reduce Item Quantity ")
-        print("3. GO back")
+        print("3. Remove Item")
+        print("4. Exit")
+        print()
         option = input("Enter the choice")
         if (option == '1'):
             #add item quantity
@@ -141,8 +159,17 @@ def add_or_remove(cart_id):
             try:
                 if(int(s)<=total_items and int(s)>0 and int(q)>0):
                     #check first the available quantity
-                    # query="update cart_item Quantity="+(int(all_items[int(s)-1][2])+q)+""
-                    pass
+                    if(check_quantity(all_items[int(s)-1][3],int(q))):
+                        query="update cart_item set Quantity="+str(int(all_items[int(s)-1][2])+int(q))+" where Item_ID="+str(all_items[int(s)-1][3])+"and Cart_ID ="+str(cart_id)+";"
+                        cursor.execute(query)
+                        db.commit()
+                        print("Item added successfully")
+                        query="update item set available_Quantity ="+str(get_quantity(all_items[int(s)-1][3])-int(q))+" where Item_ID= "+str(all_items[int(s)-1][3])+";"
+                        cursor.execute(query)
+                        db.commit()
+                        display_cart(cart_id)
+                    else:
+                        print("Insuffiient Available Quantity left.")
                 else:
                     print("enter a valid input next time")
                     print("unsuccessful adding item to cart")
@@ -151,14 +178,81 @@ def add_or_remove(cart_id):
                 print("unsuccessful adding item to cart")
 
         elif (option=='2'):
+            clear()
+            display_cart(cart_id)
+            all_items = list_items_in_cart(cart_id)
+            total_items = len(all_items)
+            print("Now enter item number of the items you want to reduce to your cart along with Quantity")
+            print("Enter numbers space seperated like if you want to reduce 3  units of item 1")
+            print("Then enter '1 3'")
+            s, q = input().split()
+
             #Reduce item quanity
-            pass
+            try:
+                if(int(s)<=total_items and int(s)>0 and int(q)>0 and int(q)<all_items[int(s)-1][2]):
+                    #check first the available quantity
+
+                    query="update cart_item set Quantity="+str(int(all_items[int(s)-1][2])-int(q))+" where Item_ID="+str(all_items[int(s)-1][3])+"and Cart_ID ="+str(cart_id)+";"
+                    cursor.execute(query)
+                    db.commit()
+                    print("Item reduce successfully")
+                    query="update item set available_Quantity ="+str(get_quantity(all_items[int(s)-1][3])+int(q))+" where Item_ID= "+str(all_items[int(s)-1][3])+";"
+                    cursor.execute(query)
+                    db.commit()
+                    display_cart(cart_id)
+
+                else:
+                    print("enter a valid input next time")
+                    print("unsuccessful adding item to cart")
+            except:
+                print("enter a valid input next time")
+                print("unsuccessful adding item to cart")
+
         elif(option=='3'):
+            clear()
+            display_cart(cart_id)
+            all_items = list_items_in_cart(cart_id)
+            total_items = len(all_items)
+            print("Now enter item number of the items you want to remove from your cart along with Quantity")
+            print("Enter item number. If you want to remove item 1")
+            print("Then enter '1'")
+            s=input()
+
+            try:
+                if(int(s)<=total_items and int(s)>0 ):
+                    #check first the available quantity
+                    query = "update item set available_Quantity =" + str(get_quantity(all_items[int(s) - 1][3]) +(all_items[int(s)-1][2])) + " where Item_ID= " + str(all_items[int(s) - 1][3]) + ";"
+                    cursor.execute(query)
+                    db.commit()
+
+                    query="delete from cart_item where Item_ID="+str(all_items[int(s)-1][3])+"and Cart_ID ="+str(cart_id)+";"
+                    cursor.execute(query)
+                    db.commit()
+                    print("Item removed successfully")
+
+                    display_cart(cart_id)
+
+                else:
+                    print("enter a valid input next time")
+                    print("unsuccessful adding item to cart")
+            except:
+                print("enter a valid input next time")
+                print("unsuccessful adding item to cart")
+
+
+        elif(option=='4'):
             break
         else:
             print("Enter a valid Input")
 
 
+def get_quantity(item_id):
+    query = "select Available_Quantity from Item where Item_ID=" + str(item_id) + ";"
+    cursor = db.cursor()
+    cursor.execute(query)
+    l = fetchdetails(cursor)
+    q = l[0][0]
+    return q
 
 def list_items_in_cart(cart_id):
     cursor = db.cursor()
