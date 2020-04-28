@@ -212,7 +212,7 @@ def enterManagerMainScreen(uid):
 		if(option =='1'):
 			viewCustomers()
 		elif(option == '2'):
-			viewEmployees()
+			viewEmployees(uid)
 		elif(option == '3'):
 			viewEmployeeAttendance(uid)
 		elif(option == '4'):

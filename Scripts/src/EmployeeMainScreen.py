@@ -1,6 +1,6 @@
 from global_db import *
 from Login import *
-from datetime import date
+from datetime import date,datetime
 
 def enterEmployeeMainScreen(uid):
 	print("----------------Hello"+uid+"----------------------")
@@ -11,7 +11,7 @@ def enterEmployeeMainScreen(uid):
 		print("")
 		print("1. Mark attendance")
 		print("2. View Profile")
-		print("3. View Orders")
+		print("3. View Customers and Orders.")
 		print("4. View Customer Complaints/Feedbacks")
 		print("5. Logout")
 		option = input("Enter your choice ==> ")
@@ -20,7 +20,7 @@ def enterEmployeeMainScreen(uid):
 		elif(option == '2'):
 			viewprofile(uid)
 		elif(option == '3'):
-			view_order()
+			viewCustomers()
 		elif(option == '4'):
 			customer_complaints()
 		elif option == '5':
@@ -35,7 +35,8 @@ def markattendance(uid):
 	ddate=date.today()
 	now = datetime.now()
 	current_time = now.strftime("%H:%M:%S")
-	query="select count(*) from Attendance where Employee_ID="+str(uid)+" and Date="+str(ddate)+";"
+	query="select count(*) from Attendance where Employee_ID=%s and Date=%s;"
+	value=(uid,ddate)
 	cursor=db.cursor()
 	cursor.execute(query,value)
 	l=fetchdetails(cursor)[0][0]
@@ -70,10 +71,23 @@ def viewprofile(uid):
 def view_order():
 	# get order details ->given the details of order-> print the details of order
 	clear()
-	print("")
-	print("Get Order Details ")
-	#script to get the order details
-	print("The details are: ")
+	while(True):
+		print("Choose one of the following options-")
+		print("1. View All Orders.")
+		print("2. Detailed view of an Order by Order ID.")
+		print("3. All orders by a Customer by Customer ID.")
+		print("4. Back to Previous Menu.")
+		s=input("Enter your choice-")
+		if(s=='1'):
+			pass
+		elif(s=='2'):
+			pass
+		elif(s=='3'):
+			pass
+		elif(s=='4'):
+			break
+		else:
+			print("Choose a valid option. Please Try Again.")
 
 def customer_complaints():
 	clear()
@@ -120,7 +134,7 @@ def customer_complaints():
 					print("This is not resolved yet. Press 1 to resolve or any other key.")
 					s=input()
 					if(s=='1'):
-						query="update help_feedback set resolved=1 where id="+str(i[0])+";"
+						query="update help_feedback set resolved=1 where complain_id="+str(i[0])+";"
 						cursor.execute(query)
 						db.commit()
 						print("Resolved Now.")
@@ -159,3 +173,95 @@ def customer_complaints():
 			break
 		else:
 			print("Invalid Choice. Please try again.")
+
+def fetch_Customers():
+	query="Select Customer_ID,Name from Customer;"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)
+	return l
+
+def show_items(item_id):
+	cursor=db.cursor()
+	query="Select Item_ID,Name,Company_Name,Price,Available_Quantity from Item where Item_ID="+str(item_id)+";"
+	cursor.execute(query)
+	l=fetchdetails(cursor)
+	for i in l:
+		print("Item Name- "+str(i[1]))
+	print()
+	return
+
+def show_Orders(order_id):
+	query="select Item_ID from orders where Order_ID="+str(order_id)+";"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)
+	items=[]
+	for i in l:
+		items.append(i[0])
+	for i in items:
+		show_items(i)
+
+def specificCustomerDetail(x):
+	query="select * from Customer where Customer_ID="+str(x)+";"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)
+	print("ID- "+str(l[0][0]))
+	print("Name- "+str(l[0][1]))
+	print("Mobile- "+str(l[0][2]))
+	print("Address- "+str(l[0][3]))
+	print("Email- "+str(l[0][4]))
+	print("Card No- "+str(l[0][5]))
+	query="select count(Order_ID) from cart_order where Cart_ID in (select Cart_Id from customer where Customer_ID="+str(x)+") order by Order_ID desc;"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)[0][0]
+	print("Total Orders- "+str(l))
+	print("Following are the Orders placed by Customer-")
+	if(l==0):
+		print("No Orders to show.")
+	else:
+		query="select Order_ID from cart_order where Cart_ID in (select Cart_Id from customer where Customer_ID="+str(x)+") order by Order_ID desc;"
+		cursor=db.cursor()
+		cursor.execute(query)
+		l=fetchdetails(cursor)
+		orders=[]
+		for i in l:
+			orders.append(i[0])
+		for i in orders:
+			print("Order_ID-"+str(i))
+			show_Orders(i)
+
+def viewCustomers():
+	clear()
+	customers=fetch_Customers()
+	print("----------------------------Customers-----------------------------------")
+	while(True):
+		print("1. View All Customers.")
+		print("2. Search by Customer ID")
+		print("3. Exit" )
+		s=input("Enter your choice- ")
+		if(s=='1'):
+			for i in customers:
+				print("ID- "+str(i[0])+"\tName- "+str(i[1]))
+		elif(s=='2'):
+			x=input("Enter Customer ID - ")
+			x=int(x)
+			f=False
+			try:
+				for i in customers:
+					if(int(x)==i[0]):
+						f=True
+						break
+				if(not f):
+					print("No Such Customer.")
+				else:
+					specificCustomerDetail(x)
+			except:
+				print("Invalid Customer ID")
+		elif(s=='3'):
+			clear()
+			break
+		else:
+			print("Invalid Input. Please try again.")

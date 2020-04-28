@@ -1,6 +1,6 @@
 from global_db import *
 
-def Owner_mainScreen():
+def enterOwnerMainScreen(uid):
 	while True:
 		print(" ----------------------------------- Welcome ----------------------------------")
 		print("")
@@ -97,7 +97,7 @@ def View_manager():
 	while True:
 		print("----------------------------- Manager Profile ------------------------------------")
 		print("1. Search by Manager ID")
-		print("2. Search by Manager Name")
+		print("2. Search by Manager Name or View all managers")
 		print("3. Go back")
 		option = input("Enter the choice: ")
 		if option == '1':
@@ -126,7 +126,7 @@ def View_manager():
 					print("Hire Date- "+str(i[6]))
 				print()
 		elif option == '2':
-			ManagerName = input("Enter Manager Name: ")
+			ManagerName = input("Enter Manager Name or Press Enter to view all: ")
 			query="select * from Manager where Name like '%"+ManagerName+"%';"
 			cursor=db.cursor()
 			cursor.execute(query)
@@ -156,7 +156,7 @@ def View_employee():
 	while True:
 		print("----------------------------- Employee Profile ------------------------------------")
 		print("1. Search by Employee ID")
-		print("2. Search by Employee Name")
+		print("2. Search by Employee Name or View all Employees")
 		print("3. Go back")
 		option = input("Enter the choice: ")
 		if option == '1':
@@ -184,7 +184,7 @@ def View_employee():
 					print("Hire Date- "+str(i[6]))
 				print()
 		elif option == '2':
-			EmployeeName = input("Enter Employee Name: ")
+			EmployeeName = input("Enter Employee Name or Press Enter to view all: ")
 			query="select * from Employee where Name like '%"+EmployeeName+"%';"
 			cursor=db.cursor()
 			cursor.execute(query)
@@ -213,7 +213,7 @@ def View_supplier():
 	while True:
 		print("----------------------------- Supplier Profile ------------------------------------")
 		print("1. Search by Supplier ID")
-		print("2. Search by Supplier Name")
+		print("2. Search by Supplier Name or View All Suppliers")
 		print("3. Go back")
 		option = input("Enter the choice: ")
 		if option == '1':
@@ -240,7 +240,7 @@ def View_supplier():
 					print("GST No.: "+str(i[5]))
 				print()
 		elif option == '2':
-			SupplierName = input("Enter Supplier Name: ")
+			SupplierName = input("Enter Supplier Name or Press Enter for all Supplier: ")
 			query="select * from Supplier where Name like '%"+SupplierName+"%';"
 			cursor=db.cursor()
 			cursor.execute(query)
@@ -268,7 +268,7 @@ def View_customer():
 	while True:
 		print("----------------------------- Customer Profile ------------------------------------")
 		print("1. Search by Customer ID")
-		print("2. Search by Customer Name")
+		print("2. Search by Customer Name or View All Customers")
 		print("3. Go back")
 		option = input("Enter the choice: ")
 		if option == '1':
@@ -295,7 +295,7 @@ def View_customer():
 					print("Credit Card: "+str(i[5]))
 				print()
 		elif option == '2':
-			SupplierName = input("Enter Customer Name: ")
+			CustomerName = input("Enter Customer Name or Press Enter for all Customers: ")
 			query="select * from Customer where Name like '%"+CustomerName+"%';"
 			cursor=db.cursor()
 			cursor.execute(query)
