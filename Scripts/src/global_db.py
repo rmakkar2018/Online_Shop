@@ -52,3 +52,19 @@ def reg_ID_Pass(id,password):
 	cursor=db.cursor()
 	cursor.execute(query,value)
 	db.commit()	
+
+def check_valid(id,role):
+	if(role=="Owner"):
+		if(id==1001 or id=='1001'):
+			return True
+		else:
+			return False
+	else:	
+		query="select "+str(role)+"_ID from "+str(role)+" where "+str(role)+"_ID="+str(id)+";"
+		cursor=db.cursor()
+		cursor.execute()
+		l=fetchdetails(cursor)
+		if(len(l)==0):
+			return False
+		else:
+			return True
