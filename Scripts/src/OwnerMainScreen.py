@@ -1,15 +1,18 @@
 from global_db import *
-import datetime
+from datetime import date
 from time import sleep
+from sales_prediction import predict_sales_for_item
+
 def enterOwnerMainScreen(uid):
-	clear()
 	while True:
+		clear()
 		print(" ----------------------------------- Welcome ----------------------------------")
 		print("")
 		print("1. Add a new Manager")
 		print("2. View People")
 		print("3. Show Stats")
-		print("4. Logout")
+		print("4. View Sales Prediction")
+		print("5. Logout")
 		print("")
 		option = input("Enter your choice ==> ")
 		if option == '1':
@@ -22,6 +25,27 @@ def enterOwnerMainScreen(uid):
 			clear()
 			show_stats()
 		elif option == '4':
+			try:
+				item_id=int(input("Enter Item ID - "))
+				month=int(input("Enter Month - "))
+				year=int(input("Enter Year - "))
+				yyy=date.today().year
+				if(1<=month<=12 and year>=yyy):
+					pred=predict_sales_for_item(month,year,item_id)
+					print()
+					print("Predicted Value of sales is "+str(pred))
+					print('')
+					print('Press ENTER to proceed.')
+					g=input()
+				else:
+					print("Enter valid details.")
+					sleep(2)
+					continue	
+			except:
+				print("Enter valid details.")
+				sleep(2)
+				continue
+		elif option == '5':
 			clear()
 			break
 		else:

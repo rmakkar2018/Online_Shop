@@ -44,10 +44,10 @@ cursor=db.cursor()
 # 				cursor.execute(query,attr)
 # 				db.commit()
 
-for item_id in range(6,19):
+for item_id in range(1005,1018):
 	for month in range(1,13):
 		base_num=randint(10,100)
-		for year in range(2000,2020):
+		for year in range(2010,2020):
 			is_leap_year=False
 			if(year%4==0 and year%100!=0):
 				is_leap_year=True
@@ -68,7 +68,7 @@ for item_id in range(6,19):
 				attr=[]
 				attr.append(today_date)
 				attr.append(item_id)
-				added_value=randint(0,5)
+				added_value=randint(0,10)
 				attr.append(base_num+added_value)
 				query="Insert Into prediction Values (%s,%s,%s);"
 				cursor.execute(query,attr)

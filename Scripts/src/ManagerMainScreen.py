@@ -283,7 +283,8 @@ def enterManagerMainScreen(uid):
 		print("3. View Employee Attendance")
 		print("4. Register Employee")
 		print("5. View Profile")
-		print("6. Log Out")
+		print("6. Add Offer on Items")
+		print("7. Log Out")
 		print('')
 		option = input("Enter your choice ==> ")
 		if(option =='1'):
@@ -296,7 +297,14 @@ def enterManagerMainScreen(uid):
 			registerEmployee(uid)
 		elif(option == '5'):
 			viewProfile(uid)
-		elif(option == '6'):
+		elif(option=='6'):
+			try:
+				item_id=int(input("Enter Item ID - "))
+				add_offer(item_id)
+			except:
+				print("Invalid Item ID.")
+				sleep(2)
+		elif(option == '7'):
 			clear()
 			print("---------------------Login Portal---------------------")
 			break
