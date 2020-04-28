@@ -136,7 +136,7 @@ def searchItem(uid):
 		elif(s=='3'):
 			dept_name=input("Enter Deaprtment Name- ")
 			cursor=db.cursor()
-			query="Select Item_ID,Name,Company_Name,Price,Available_Quantity from Item where Deaprtment like '%"+dept_name+"%';"
+			query="Select Item_ID,Name,Company_Name,Price,Available_Quantity from Item where Department like '%"+dept_name+"%';"
 			cursor.execute(query)
 			l=fetchdetails(cursor)
 			if(len(l)==0):
