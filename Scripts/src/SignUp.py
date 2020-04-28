@@ -9,7 +9,7 @@ def dbCustomerReg(name,email,mobile,address,credit_card,password,confPassword):
 	if(len(email) == 0):
 		print("Enter a valid email id")
 		return 0
-	if(len(mobile) == 0):
+	if(len(mobile) == 0 and len(mobile) > 10):
 		print("Enter a valid mobile no.")
 		return 0
 	if(len(address) == 0):
@@ -41,11 +41,11 @@ def dbCustomerReg(name,email,mobile,address,credit_card,password,confPassword):
 	print("")
 	print("Registring Customer.........................")
 	try:
-		cursor.execute(query,value)
-		reg_ID_Pass(id,password)
-		update_id(id-1,2)
+		cursor.execute(query, value)
+		reg_ID_Pass(id, password)
+		update_id(id - 1, 2)
 		print("--------------------------------------------------")
-		print("ID Assigned- "+ str(id))
+		print("ID Assigned- " + str(id))
 	except:
 		return 0
 	return 1
@@ -78,7 +78,7 @@ def dbSupplierReg(name,email,mobile,address,gst,password,confPassword):
 	if(len(email) == 0):
 		print("Enter a valid email id")
 		return 0
-	if(len(mobile) == 0):
+	if(len(mobile) == 0 and len(mobile) > 10):
 		print("Enter a valid mobile no.")
 		return 0
 	if(len(address) == 0):

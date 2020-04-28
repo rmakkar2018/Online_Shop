@@ -5,7 +5,7 @@ import re
 db = sql.connect(
 	host="localhost",
 	user = "root",
-	passwd = "himraj18",
+	passwd = "1111",
 	database = "project67"
 )
 

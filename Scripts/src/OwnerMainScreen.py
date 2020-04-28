@@ -1,6 +1,8 @@
 from global_db import *
-
+import datetime
+from time import sleep
 def enterOwnerMainScreen(uid):
+	clear()
 	while True:
 		print(" ----------------------------------- Welcome ----------------------------------")
 		print("")
@@ -8,12 +10,16 @@ def enterOwnerMainScreen(uid):
 		print("2. View People")
 		print("3. Show Stats")
 		print("4. Logout")
-		option = input(" Enter your choice: ")
+		print("")
+		option = input("Enter your choice ==> ")
 		if option == '1':
+			clear()
 			Register_manager();
 		elif option == '2':
+			clear()
 			View()
-		elif option == '3': 
+		elif option == '3':
+			clear()
 			show_stats()
 		elif option == '4':
 			clear()
@@ -33,39 +39,68 @@ def Register_manager():
 		if(salary<=0):
 			print("Please enter a valid value.")
 			print("Registration failed.")
+			sleep(2)
+			clear()
 			return
 	except:
 		print("Please enter a valid value.")
 		print("Registration failed.")
+		sleep(2)
+		clear()
 		return
 	department=input("Enter department: ")
 	email=input("Enter Email-ID: ")
+	if(check(email) == 0):
+		print("Enter a valid Email ID")
+		sleep(2)
+		clear()
+		return
 	address=input("Enter Address: ")
 	try:
-		mobile=float(input("Enter Salary: "))
-		if(mobile<=0):
+		mobile=float(input("Enter Mobile No. : "))
+		if(mobile<=0 and len(str(mobile))> 10):
 			print("Please enter a valid value.")
 			print("Registration failed.")
+			sleep(2)
+			clear()
 			return
 	except:
 		print("Please enter a valid value.")
 		print("Registration failed.")
+		sleep(2)
+		clear()
 		return
-	hire_date=date.today()
+	hire_date= datetime.date.today()
+	password=input("Ënter Password- ")
+	cnf_password=input("Confirm password- ")
+	if(password!=cnf_password or len(password)==0):
+		print("Please enter a valid Password.")
+		print("Registration failed.")
+		sleep(2)
+		clear()
+		return
 	try:
 		query="insert into Manager value (%s,%s,%s,%s,%s,%s,%s,%s);"
 		value=(id,name,salary,department,email,address,hire_date,mobile)
 		cursor=db.cursor()
 		cursor.execute(query,value)
 		db.commit()
+		query="insert into ID_pass value (%s,%s);"
+		value=(id,password)
+		cursor = db.cursor()
+		cursor.execute(query, value)
+		db.commit()
 	except:
 		print("Registration Failed. Please Try Again.")
+		sleep(2)
+		clear()
 		return
 	update_id(id-1,1)
 	print("The Manager has been registered.")
 	print("Manager ID- "+str(id))
-	print("Welcome to the Team")
 	print()
+	sleep(2)
+	clear()
 
 def View():
 	clear()
@@ -124,6 +159,7 @@ def View_manager():
 					print("Address- "+str(i[5]))
 					print("Salary- "+str(i[2]))
 					print("Hire Date- "+str(i[6]))
+					print("---------------------------------------------------------------------------")
 				print()
 		elif option == '2':
 			ManagerName = input("Enter Manager Name or Press Enter to view all: ")

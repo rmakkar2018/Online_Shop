@@ -18,7 +18,7 @@ def display_bill(OrderID,total_amount):
 
 def display_cart(cartID):
 	print(" ____________________________________________________________________________")
-	print('|%6s|%28s|%10s|%12s|%16s|' % ("S.No", "Name", "Quantity", "Cost", "Net Cost"))
+	print('| %6s|%28s|%10s|%12s|%16s |' % ("S.No", "Name", "Quantity", "Cost", "Net Cost"))
 	print("----------------------------------------------------------------------------")
 
 	#print("| S.No |            Name            | Quantity |    cost    |    Net Cost    |")
@@ -35,8 +35,8 @@ def display_cart(cartID):
 		print("____________________________________________________________________________")
 		Sno=Sno+1
 		total_cost = total_cost +totalc
-	print("|----------------------Total Amount without discount : '%14.2f'------|" %total_cost)
-	print("|-------------------------Total Amount with discount : '%14.2f'------|" %(total_cost-total_dis))
+	print("|----------------------Total Amount without discount : '%14.2f'-------|" %total_cost)
+	print("|-------------------------Total Amount with discount : '%14.2f'-------|" %(total_cost-total_dis))
 	print("----------------------------------------------------------------------------")
 	return total_cost-total_dis
 
