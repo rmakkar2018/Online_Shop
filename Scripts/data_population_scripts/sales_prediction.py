@@ -3,6 +3,8 @@ from sklearn.linear_model import LinearRegression
 import mysql.connector as sql
 from datetime import datetime
 
+
+
 def fetchdetails(cursor):
 	l=[]
 	for i in cursor:
@@ -49,11 +51,10 @@ def predict_sales_for_item(month,year,Item_ID):
 	print(" Data Training starts here ")
 	X = np.array(X)
 	y = np.array(y)
-	reg = LinearRegression().fit(X, y)
-	print("how good is fitting: "+str(reg.score(X, y)))
-	# print(reg.coef_)
-	# print(reg.intercept_)
-	value=reg.predict(np.array([[int(month), int(year)]]))
-	print("The predicted value of "+str(value[0]))
+	clf = svm.SVR()
+	clf.fit(X, y)
+	value=clf.predict(np.array([[int(month), int(year)]]))
+	
+	print("The predicted value is: "+str(value[0]))
 
 predict_sales_for_item(3,2021,12)
