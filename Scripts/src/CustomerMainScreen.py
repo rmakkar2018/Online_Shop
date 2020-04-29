@@ -73,36 +73,36 @@ def searchItem(uid):
 			while(True):
 				try:
 					l=list(input().split())
+					if(l[0]=='-1'):
+						break
+					else:
+						try:
+							l[0]=int(l[0])
+							if(l[0] not in store):
+								print("Invalid Entry: "+str(l[0]))
+								f=False
+								break	
+						except:
+							print("Invalid Entry: "+l[0])
+							f=False
+							break
+						try:
+							l[1]=int(l[1])
+						except:
+							print("Invalid Entry: "+l[1])
+							f=False
+							break
+						if(check_quantity(l[0],l[1])):
+							_items.append(l[0])
+							_quantity.append(l[1])
+						else:
+							print("Please enter quantity less than or equal to available quantity.")
+							f=False
+							break	
 				except:
 					print("Invalid Entry. Try Again")
 					f=False
 					break
-				if(l[0]=='-1'):
-					break
-				else:
-					try:
-						l[0]=int(l[0])
-						if(l[0] not in store):
-							print("Invalid Entry: "+str(l[0]))
-							f=False
-							break	
-					except:
-						print("Invalid Entry: "+l[0])
-						f=False
-						break
-					try:
-						l[1]=int(l[1])
-					except:
-						print("Invalid Entry: "+l[1])
-						f=False
-						break
-					if(check_quantity(l[0],l[1])):
-						_items.append(l[0])
-						_quantity.append(l[1])
-					else:
-						print("Please enter quantity less than or equal to available quantity.")
-						f=False
-						break
 			if(f):
 				items=items+_items[:]
 				quantity=quantity+_quantity[:]

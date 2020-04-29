@@ -522,6 +522,14 @@ def show_stats():
 	if(earn==None):
 		earn=0
 
+	if(bills!=0):
+		query="select VARIANCE(Total) from Bill;"
+		cursor=db.cursor()
+		cursor.execute(query)
+		variance=fetchdetails(cursor)[0][0]	
+	else:
+		variance="No Bills yet."	
+
 	print("------------------------- STATISTICS OF SHOP -------------------------")
 	print("=> Total Managers- "+str(manager))
 	print("=> Total Employee- "+str(employee))
@@ -529,6 +537,7 @@ def show_stats():
 	print("=> Total Customer- "+str(customer))
 	print("=> Total Orders- "+str(bills))
 	print("=> Total Earnings- "+str(earn))
+	print("=> Variance in Bill Amount- "+str(variance))	
 	print()
 	print("Press ENTER to proceed.")
 	garbage=input()
