@@ -119,7 +119,7 @@ def Register_manager():
 		sleep(2)
 		clear()
 		return
-	hire_date= datetime.date.today()
+	hire_date= date.today()
 	password=input("Ënter Password- ")
 	cnf_password=input("Confirm password- ")
 	if(password!=cnf_password or len(password)==0):
