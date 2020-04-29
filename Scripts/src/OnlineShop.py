@@ -88,6 +88,9 @@ def initOptions():
 			break;
 		else:
 			print("Enter a valid option")
+		clear()
+		printIntroduction()
+		sleep(0.5)
 
 clear()
 printIntroduction()

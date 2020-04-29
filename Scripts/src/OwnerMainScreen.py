@@ -33,7 +33,7 @@ def enterOwnerMainScreen(uid):
 				if(1<=month<=12 and year>=yyy):
 					pred=predict_sales_for_item(month,year,item_id)
 					print()
-					print("Predicted Value of sales is "+str(pred))
+					print("Predicted Value of sales is "+str(pred)+" units.")
 					print('')
 					print('Press ENTER to proceed.')
 					g=input()
@@ -531,7 +531,7 @@ def show_stats():
 		variance="No Bills Yet."
 
 	if(employee!=0):
-		query="select STDEV(Salary) from Employee;"
+		query="select STDDEV(Salary) from Employee;"
 		cursor=db.cursor()
 		cursor.execute(query)
 		sdemp=fetchdetails(cursor)[0][0]
@@ -539,7 +539,7 @@ def show_stats():
 		sdemp="No Employees Yet."
 
 	if(manager!=0):
-		query="select STDEV(Salary) from Manager;"
+		query="select STDDEV(Salary) from Manager;"
 		cursor=db.cursor()
 		cursor.execute(query)
 		sdman=fetchdetails(cursor)[0][0]

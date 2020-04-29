@@ -18,7 +18,7 @@ def make_payment(CustID):
 		if(s!='1'):
 			while(True):
 				try:
-					l=int(input())
+					l=int(input("Enter Card No. - "))
 					break
 				except:
 					print("Enter valid Card No.")

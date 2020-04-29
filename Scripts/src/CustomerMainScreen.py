@@ -54,7 +54,7 @@ def searchItem(uid):
 			print('')
 			print("Following are Items matching with your search-")
 			for i in l:
-				if(offer=='1' and i[0] in l3):
+				if((offer=='1' and i[0] in l3) or offer!='1'):
 					print()
 					print("Item Number- "+str(i[0]))
 					print("Item Name- "+str(i[1]))
@@ -103,7 +103,7 @@ def searchItem(uid):
 					print("Invalid Entry. Try Again")
 					f=False
 					break
-			if(f):
+			if(f and len(_items)>0):
 				items=items+_items[:]
 				quantity=quantity+_quantity[:]
 				print("Items successfully added to cart.")

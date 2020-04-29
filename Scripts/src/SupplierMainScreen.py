@@ -57,7 +57,7 @@ def view_items_supplied(uid):
 			name=input("Name: ")
 			print("2. Enter Brand Name or Press ENTER to not to apply this filter.")
 			brand_name=input("Brand Name: ")
-			print("2. Enter Item Type or Press ENTER to not to apply this filter.")
+			print("3. Enter Item Type or Press ENTER to not to apply this filter.")
 			item_type=input("Item Type: ")
 			query="Select Item_ID,Name,Company_Name,Price,Available_Quantity from Item where Name like '%"+name+"%' and Company_Name like '%"+brand_name+"%' and Department like '%"+item_type+"%' and Item_ID in (select Item_ID from supplier_item where Supplier_ID="+str(uid)+");"
 			cursor=db.cursor()
@@ -222,9 +222,13 @@ def add_new_item(uid):
 	while(True):
 		try:
 			exp_date=input("Enter Expiry Date (in YYYY-MM-DD format)- ")
-			exp_date=list(map(int,exp_date.split('-')))
-			exp_date=datetime.datetime(exp_date[0],exp_date[1],exp_date[2])
-			break
+			if(exp_date==''):
+				exp_date=None
+				break
+			else:
+				exp_date=list(map(int,exp_date.split('-')))
+				exp_date=datetime.datetime(exp_date[0],exp_date[1],exp_date[2])
+				break
 		except:
 			print("Invalid Date. Try Again.")
 			continue

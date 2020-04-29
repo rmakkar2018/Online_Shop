@@ -276,9 +276,9 @@ def viewProfile(uid):
 	clear()
 
 def enterManagerMainScreen(uid):
-	clear()
-	print("--------------------Manager Portal-----------------")
 	while (True):
+		clear()
+		print("--------------------Hello "+str(uid)+"-----------------")
 		print("1. View Customers")
 		print("2. View Employees")
 		print("3. View Employee Attendance")
@@ -315,7 +315,7 @@ def enterManagerMainScreen(uid):
 				if(1<=month<=12 and year>=yyy):
 					pred=predict_sales_for_item(month,year,item_id)
 					print()
-					print("Predicted Value of sales is "+str(pred))
+					print("Predicted Value of sales is "+str(pred)+" units.")
 					print('')
 					print('Press ENTER to proceed.')
 					g=input()
