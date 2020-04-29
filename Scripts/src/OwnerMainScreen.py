@@ -528,7 +528,7 @@ def show_stats():
 		cursor.execute(query)
 		variance=fetchdetails(cursor)[0][0]	
 	else:
-		variance="No Bills yet."	
+		variance="No Bills Yet."	
 
 	print("------------------------- STATISTICS OF SHOP -------------------------")
 	print("=> Total Managers- "+str(manager))
