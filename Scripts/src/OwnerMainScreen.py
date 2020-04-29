@@ -528,7 +528,23 @@ def show_stats():
 		cursor.execute(query)
 		variance=fetchdetails(cursor)[0][0]	
 	else:
-		variance="No Bills Yet."	
+		variance="No Bills Yet."
+
+	if(employee!=0):
+		query="select STDEV(Salary) from Employee;"
+		cursor=db.cursor()
+		cursor.execute(query)
+		sdemp=fetchdetails(cursor)[0][0]
+	else:
+		sdemp="No Employees Yet."
+
+	if(manager!=0):
+		query="select STDEV(Salary) from Manager;"
+		cursor=db.cursor()
+		cursor.execute(query)
+		sdman=fetchdetails(cursor)[0][0]
+	else:
+		sdman="No Managers Yet."
 
 	print("------------------------- STATISTICS OF SHOP -------------------------")
 	print("=> Total Managers- "+str(manager))
@@ -537,7 +553,10 @@ def show_stats():
 	print("=> Total Customer- "+str(customer))
 	print("=> Total Orders- "+str(bills))
 	print("=> Total Earnings- "+str(earn))
-	print("=> Variance in Bill Amount- "+str(variance))	
+	print("=> Variance in Bill Amount- "+str(variance))
+	print("=> Standard Deviation in Managers's Salary- "+str(sdman))
+	print("=> Standard Deviation in Employee's Salary- "+str(sdemp))
+		
 	print()
 	print("Press ENTER to proceed.")
 	garbage=input()
