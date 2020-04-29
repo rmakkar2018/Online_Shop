@@ -51,6 +51,30 @@ def enterOwnerMainScreen(uid):
 		else:
 			print(" Enter a valid choice: ")
 
+def chooseDepartment():
+	while(True):
+		print("")
+		print("Choose manager Department")
+		print("1. Sales")
+		print("2. Inventory")
+		print("3. Distribution")
+		print("4. Billing")
+		print("5. Logistics")
+		print("")
+		option = input("Enter your choice ==> ")
+		if(option == "1"):
+			return "Sales"
+		elif(option == "2"):
+			return "Inventory"
+		elif(option == "3"):
+			return "Distribution"
+		elif(option == "4"):
+			return "Billing"
+		elif(option == "5"):
+			return "Logistics"
+		else:
+			print("Enter a valid option")
+			
 def Register_manager():
 	print(" --------------------- Welcome to Manager registartion ---------------------------- ")
 	print("")
@@ -72,7 +96,8 @@ def Register_manager():
 		sleep(2)
 		clear()
 		return
-	department=input("Enter department: ")
+	department=chooseDepartment()
+	print("")
 	email=input("Enter Email-ID: ")
 	if(check(email) == 0):
 		print("Enter a valid Email ID")
