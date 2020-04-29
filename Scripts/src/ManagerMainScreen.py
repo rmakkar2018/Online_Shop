@@ -367,6 +367,7 @@ def add_offer(item_id):
 			clear()
 			return
 		offer_id=fetch_id()
+		update_id(offer_id-1,1)
 		query="insert into Offer value (%s,%s)"
 		value=(offer_id,perc)
 		cursor=db.cursor()

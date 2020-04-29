@@ -2,6 +2,11 @@ from global_db import *
 from cart import *
 from time import sleep
 
+def intersection(lst1, lst2): 
+	temp = set(lst2) 
+	lst3 = [value for value in lst1 if value in temp]
+	return lst3
+
 def searchItem(uid):
 	items=[]
 	quantity=[]
@@ -12,36 +17,53 @@ def searchItem(uid):
 		clear()
 		print("---------------- Searching an Item! -------------------")
 		print("Choose one of the options- ")
-		print("1. Search by Name")
-		print("2. Search by Brand")
-		print("3. Search by Deaprtment")
-		print("4. Back to Previous Menu")
+		print("1. Search by Filters.")
+		print("2. Back to Previous Menu")
 		s=input("Enter your choice ==> ")
 		print()
 		# here we search for the particular item's primary key corresponding to the input 
 		if(s=='1'):
-			item_name=input("Enter Item Name- ")
+			item_name=input("Enter Item Name or Press ENTER to skip this Filter - ")
+			brand_name=input("Enter Brand Name or Press ENTER to skip this Filter - ")
+			dept_name=input("Enter Item Type or Press ENTER to skip this Filter - ")
+			offer=input("Press 1 to see items only having offers or press anything - ")
+			#print("Offer: "+offer)
 			cursor=db.cursor()
-			query="Select Item_ID,Name,Company_Name,Price,Available_Quantity from Item where Name like '%"+item_name+"%';"
+			query="Select Item_ID,Name,Company_Name,Price,Available_Quantity from Item where Name like '%"+item_name+"%' and Company_Name like '%"+brand_name+"%' and Department like '%"+dept_name+"%';"
 			cursor.execute(query)
 			l=fetchdetails(cursor)
 			if(len(l)==0):
 				print("No Item Available.")
-				sleep(1)
+				sleep(2)
 				continue
-			print("Following are Items matching with your search-")
 			store=[]
 			for i in l:
 				store.append(i[0])
-				print()
-				print("Item Number- "+str(i[0]))
-				print("Item Name- "+str(i[1]))
-				print("Company- "+str(i[2]))
-				print("Price- "+str(i[3]))
-				print("Available Quantity- "+str(i[4]))
-				percentage=fetchoffer(i[0])
-				if(percentage>0):
-					print("Discount: "+str(percentage)+"%")
+			if(offer=='1'):
+				query2="Select Item_ID from Offer_Item;"
+				cursor.execute(query2)
+				l2=fetchdetails(cursor)
+				l3=[]
+				for i in l2:
+					l3.append(i[0])
+				#print(l3)
+				if(len(l3)==0 or len(intersection(store,l3))==0):
+					print("No such Items with Offers available.")
+					sleep(2)
+					continue
+			print('')
+			print("Following are Items matching with your search-")
+			for i in l:
+				if(offer=='1' and i[0] in l3):
+					print()
+					print("Item Number- "+str(i[0]))
+					print("Item Name- "+str(i[1]))
+					print("Company- "+str(i[2]))
+					print("Price- "+str(i[3]))
+					print("Available Quantity- "+str(i[4]))
+					percentage=fetchoffer(i[0])
+					if(percentage>0):
+						print("Discount: "+str(percentage)+"%")
 			print()
 			print("Now enter item number of the items you want to add to your cart along with Quantity")
 			print("Enter numbers space seperated like if you want to buy 3 units of item 1")
@@ -49,7 +71,12 @@ def searchItem(uid):
 			print("If you don't want to add more items enter -1")
 			print()
 			while(True):
-				l=list(input().split())
+				try:
+					l=list(input().split())
+				except:
+					print("Invalid Entry. Try Again")
+					f=False
+					break
 				if(l[0]=='-1'):
 					break
 				else:
@@ -83,106 +110,6 @@ def searchItem(uid):
 			else:
 				print("Failed to add items to cart due to invalid entry. Please try again.")
 		elif(s=='2'):
-			brand_name=input("Enter Brand Name- ")
-			cursor=db.cursor()
-			query="Select Item_ID,Name,Company_Name,Price,Available_Quantity from Item where Company_Name like '%"+brand_name+"%';"
-			cursor.execute(query)
-			l=fetchdetails(cursor)
-			if(len(l)==0):
-				print("No Item Available.")
-				sleep(1)
-				continue
-			print("Following are Items matching with your search-")
-			for i in l:
-				print()
-				print("Item Number- "+str(i[0]))
-				print("Item Name- "+str(i[1]))
-				print("Company- "+str(i[2]))
-				print("Price- "+str(i[3]))
-				print("Available Quantity- "+str(i[4]))
-			print()
-			print("Now enter item number of the items you want to add to your cart along with Quantity")
-			print("Enter numbers space seperated like if you want to buy 3 units of item 1")
-			print("Then enter '1 3'")
-			print("If you don't want to add more items enter -1")
-			print()
-			while(True):
-				l=list(input().split())
-				if(l[0]=='-1'):
-					break
-				else:
-					try:
-						l[0]=int(l[0])
-					except:
-						print("Invalid Entry: "+l[0])
-						f=False
-						break
-					try:
-						l[1]=int(l[1])
-					except:
-						print("Invalid Entry: "+l[1])
-						f=False
-						break
-					_items.append(l[0])
-					_quantity.append(l[1])
-			if(f):
-				items=items+_items[:]
-				quantity=quantity+_quantity[:]
-				if(len(_items)>0):
-					print("Items successfully added to cart.")
-			else:
-				print("Failed to add items to cart due to invalid entry. Please try again.")
-
-		elif(s=='3'):
-			dept_name=input("Enter Deaprtment Name- ")
-			cursor=db.cursor()
-			query="Select Item_ID,Name,Company_Name,Price,Available_Quantity from Item where Department like '%"+dept_name+"%';"
-			cursor.execute(query)
-			l=fetchdetails(cursor)
-			if(len(l)==0):
-				print("No Item Available.")
-				sleep(1)
-				continue
-			print("Following are Items matching with your search-")
-			for i in l:
-				print()
-				print("Item Number- "+str(i[0]))
-				print("Item Name- "+str(i[1]))
-				print("Company- "+str(i[2]))
-				print("Price- "+str(i[3]))
-				print("Available Quantity- "+str(i[4]))
-			print()
-			print("Now enter item number of the items you want to add to your cart along with Quantity")
-			print("Enter numbers space seperated like if you want to buy 3 units of item 1")
-			print("Then enter '1 3'")
-			print("If you don't want to add more items enter -1")
-			print()
-			while(True):
-				l=list(input().split())
-				if(l[0]=='-1'):
-					break
-				else:
-					try:
-						l[0]=int(l[0])
-					except:
-						print("Invalid Entry: "+l[0])
-						f=False
-						break
-					try:
-						l[1]=int(l[1])
-					except:
-						print("Invalid Entry: "+l[1])
-						f=False
-						break
-					_items.append(l[0])
-					_quantity.append(l[1])
-			if(f):
-				items=items+_items[:]
-				quantity=quantity+_quantity[:]
-				print("Items successfully added to cart.")
-			else:
-				print("Failed to add items to cart due to invalid entry. Please try again.")
-		elif(s=='4'):
 			clear()
 			break
 		else:
