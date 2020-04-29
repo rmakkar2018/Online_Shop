@@ -27,7 +27,7 @@ def aboutApp():
 	clear()
 	print("The scope of the project is clear to give a simple application to reduce the effort while doing shopping offline or we can say by doing it with an old method.")
 	print("In this application, we are trying to save the order list of customers and the customer can repeat any of the previous five orders.")
-	print("Trying to provide a holf and pickup service to the customer for their ease.")
+	print("Trying to provide a hold and pickup service to the customer for their ease.")
 	print("***************************************************************************************************************************************************************")
 	print("Objectives : ")
 	print("1. Convenience")
