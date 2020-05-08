@@ -307,26 +307,27 @@ def enterManagerMainScreen(uid):
 				print("Invalid Item ID.")
 				sleep(2)
 		elif(option == '7'):
-			try:
-				item_id=int(input("Enter Item ID - "))
-				month=int(input("Enter Month - "))
-				year=int(input("Enter Year - "))
-				yyy=date.today().year
-				if(1<=month<=12 and year>=yyy):
-					pred=predict_sales_for_item(month,year,item_id)
-					print()
-					print("Predicted Value of sales is "+str(pred)+" units.")
-					print('')
-					print('Press ENTER to proceed.')
-					g=input()
-				else:
-					print("Enter valid details.")
-					sleep(2)
-					continue	
-			except:
+			#try:
+			item_id=int(input("Enter Item ID - "))
+			month=int(input("Enter Month - "))
+			year=int(input("Enter Year - "))
+			yyy=date.today().year
+			if(1<=month<=12 and year>=yyy):
+				pred=predict_sales_for_item(month,year,item_id)
+				print()
+				print("Predicted Value of sales is "+str(pred)+" units.")
+				print('')
+				show_graph(item_id,month,year)
+				print('Press ENTER to proceed.')
+				g=input()
+			else:
 				print("Enter valid details.")
 				sleep(2)
-				continue
+				continue	
+			# except:
+			# 	print("Enter valid details.")
+			# 	sleep(2)
+			# 	continue
 		elif(option == '8'):
 			clear()
 			print("---------------------Login Portal---------------------")

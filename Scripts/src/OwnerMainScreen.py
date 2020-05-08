@@ -35,6 +35,7 @@ def enterOwnerMainScreen(uid):
 					print()
 					print("Predicted Value of sales is "+str(pred)+" units.")
 					print('')
+					show_graph(item_id,month,year)
 					print('Press ENTER to proceed.')
 					g=input()
 				else:

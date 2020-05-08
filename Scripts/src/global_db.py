@@ -1,6 +1,9 @@
 import mysql.connector as sql
 from os import system,name
 import re
+from sales_prediction import predict_sales_for_item
+import matplotlib.pyplot as plt
+
 
 db = sql.connect(
 	host="localhost",
@@ -126,3 +129,47 @@ def check_cart2(id):
 		return False
 	else:
 		return True
+
+def check_if_data_present(item_id,month,year):
+	query="select count(*) from Prediction where Item_ID="+str(item_id)+" and month(Date)="+str(month)+" and year(Date)="+str(year)+";"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)[0][0]
+	if(l==0):
+		return False
+	else:
+		return True	
+
+def collect_data(item_id,month,year):
+	query="select sum(Quantity) from Prediction where Item_ID="+str(item_id)+" and month(Date)="+str(month)+" and year(Date)="+str(year)+";"
+	cursor=db.cursor()
+	cursor.execute(query)
+	l=fetchdetails(cursor)[0][0]
+	return l
+
+def show_graph(item_id,month,year):
+	years_available=[]
+	sales_available=[]
+	years_pred=[]
+	sales_pred=[]
+	for i in range(year-4,year+1):
+		if(check_if_data_present(item_id,month,i)):
+			years_available.append(i)
+			val=collect_data(item_id,month,i)
+			sales_available.append(val)
+		else:
+			years_pred.append(i)
+			val=predict_sales_for_item(month,i,item_id)
+			sales_pred.append(val)
+	if(len(years_available)>0):
+		years_pred=[years_available[-1]]+years_pred
+		sales_pred=[sales_available[-1]]+sales_pred
+	plt.plot(years_pred,sales_pred,'--go',label="Predicted Sales")
+	if(len(years_available)>0):
+		plt.plot(years_available,sales_available,'--bo',label="Previous Sales")
+	plt.title("Previous/Predicted Sales of Item ID-"+str(item_id))
+	plt.legend()
+	plt.xlabel('Year')
+	plt.ylabel('Sales in Units')
+	plt.xticks(years_available+years_pred)
+	plt.show()
