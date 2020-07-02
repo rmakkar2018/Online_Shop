@@ -1,6 +1,6 @@
 # Online Shop
 **Created by:
-[Abhinav Sharma](https://www.github.com/abhiRock99), [Himanshu Raj](https://www.github.com/himanshuraj18), [Rohit Makkar](https://www.github.com/rmakkar2018), [Jaspreet Saka](https://www.github.com/Mayanksaka), [Ritik Garg](https://www.github.com/Ritikgarg1773)**
+[Abhinav Sharma](https://www.github.com/abhiRock99), [Himanshu Raj](https://www.github.com/himanshuraj18), [Rohit Makkar](https://www.github.com/rmakkar2018), [Jaspreet Saka](https://www.github.com/Mayanksaka) and [Ritik Garg](https://www.github.com/Ritikgarg1773)**
 
 Build an Online Shop which can be used by Customer, Supplier, Manager, Employee and Owner of the Shop. It is a CLI based project with many features.
 Made as a part of project in Database Management System course at IIIT-Delhi.
