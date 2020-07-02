@@ -25,4 +25,4 @@ Made as a part of project in Database Management System course at IIIT-Delhi.
 1. Run Scripts/src/mysqldump.sql to upload the database on your system.
 2. Run OnlineShop.py
 
-**Note-** You must have mysql.connector and numpy installed before running this project.
+**Note-** You must have python modules mysql.connector and numpy installed before running this project.
