@@ -1,4 +1,0 @@
-
-
-after placing every order successfully, the cart_item is to be made empty
-
